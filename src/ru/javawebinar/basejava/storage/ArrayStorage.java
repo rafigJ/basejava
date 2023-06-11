@@ -12,7 +12,7 @@ public class ArrayStorage {
     private int size;
 
     public void clear() {
-        Arrays.fill(storage, 0, size, null);
+        Arrays.fill(storage, 0, size - 1, null);
         size = 0;
     }
 
@@ -32,6 +32,7 @@ public class ArrayStorage {
         }
         if (size >= storage.length) {
             System.out.printf("ERROR: the storage is overflowing with uuid %s%n", r.getUuid());
+            return;
         }
         storage[size] = r;
         size++;
