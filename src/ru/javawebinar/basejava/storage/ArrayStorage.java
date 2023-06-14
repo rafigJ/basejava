@@ -19,7 +19,7 @@ public class ArrayStorage {
 
     public void update(Resume r) {
         int index = getIndex(r.getUuid());
-        if (index == -1) {
+        if (!isExist(index)) {
             System.out.printf("ERROR: a resume with a similar uuid is not present in the storage; uuid: %s%n", r.getUuid());
             return;
         }
@@ -29,7 +29,7 @@ public class ArrayStorage {
     public void save(Resume r) {
         if (size >= STORAGE_LIMIT) {
             System.out.printf("ERROR: the storage is overflowing with uuid %s%n", r.getUuid());
-        } else if (isExist(r.getUuid())) {
+        } else if (isExist(getIndex(r.getUuid()))) {
             System.out.printf("ERROR: a resume with a similar uuid is present in the storage; uuid: %s%n", r.getUuid());
         } else {
             storage[size] = r;
@@ -37,8 +37,8 @@ public class ArrayStorage {
         }
     }
 
-    private boolean isExist(String uuid) {
-        return getIndex(uuid) != -1;
+    private boolean isExist(int index) {
+        return index != -1;
     }
 
     private int getIndex(String uuid) {
@@ -52,7 +52,7 @@ public class ArrayStorage {
 
     public Resume get(String uuid) {
         int index = getIndex(uuid);
-        if (index == -1) {
+        if (!isExist(index)) {
             System.out.printf("ERROR: A resume with the given uuid is not in storage. uuid: %s%n", uuid);
             return null;
         }
@@ -61,7 +61,7 @@ public class ArrayStorage {
 
     public void delete(String uuid) {
         int index = getIndex(uuid);
-        if (index == -1) {
+        if (!isExist(index)) {
             System.out.printf("ERROR: the resume with the entered uuid is not present in the storage. uuid: %s%n", uuid);
             return;
         }
