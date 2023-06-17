@@ -30,27 +30,34 @@ public class MainArray {
                 uuid = params[1].intern();
             }
             switch (params[0]) {
-                case "list" -> printAll();
-                case "size" -> System.out.println(ARRAY_STORAGE.size());
-                case "save" -> {
+                case "list":
+                    printAll();
+                    break;
+                case "size":
+                    System.out.println(ARRAY_STORAGE.size());
+                    break;
+                case "save":
                     r = new Resume();
                     r.setUuid(uuid);
                     ARRAY_STORAGE.save(r);
                     printAll();
-                }
-                case "delete" -> {
+                    break;
+                case "delete":
                     ARRAY_STORAGE.delete(uuid);
                     printAll();
-                }
-                case "get" -> System.out.println(ARRAY_STORAGE.get(uuid));
-                case "clear" -> {
+                    break;
+                case "get":
+                    System.out.println(ARRAY_STORAGE.get(uuid));
+                    break;
+                case "clear":
                     ARRAY_STORAGE.clear();
                     printAll();
-                }
-                case "exit" -> {
+                    break;
+                case "exit":
                     return;
-                }
-                default -> System.out.println("Неверная команда.");
+                default:
+                    System.out.println("Неверная команда.");
+                    break;
             }
         }
     }
