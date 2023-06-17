@@ -7,17 +7,8 @@ import ru.javawebinar.basejava.model.Resume;
  */
 public class ArrayStorage extends AbstractArrayStorage {
 
-    public void update(Resume r) {
-        int index = getIndex(r.getUuid());
-        if (!isExist(index)) {
-            System.out.printf("ERROR: a resume with a similar uuid is not present in the storage; uuid: %s%n", r.getUuid());
-            return;
-        }
-        storage[index] = r;
-    }
-
     public void save(Resume r) {
-        if (size >= STORAGE_LIMIT) {
+        if (size == STORAGE_LIMIT) {
             System.out.printf("ERROR: the storage is overflowing with uuid %s%n", r.getUuid());
         } else if (isExist(getIndex(r.getUuid()))) {
             System.out.printf("ERROR: a resume with a similar uuid is present in the storage; uuid: %s%n", r.getUuid());

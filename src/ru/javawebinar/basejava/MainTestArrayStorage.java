@@ -27,19 +27,13 @@ public class MainTestArrayStorage {
         System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
 
         printAll();
-//        ARRAY_STORAGE.delete(r1.getUuid());
-//        printAll();
-//        ARRAY_STORAGE.clear();
-//        printAll();
+        ARRAY_STORAGE.delete(r1.getUuid());
+        printAll();
+        ARRAY_STORAGE.clear();
+        printAll();
 
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
-        Resume r4 = new Resume();
-        r4.setUuid("uuid3");
-
-        System.out.printf("\n%s == %s \n", r3.hashCode(), ARRAY_STORAGE.get("uuid3").hashCode()); // объекты одни и те же
-        ARRAY_STORAGE.update(r4);
-        System.out.printf("%s != %s \n", r3.hashCode(), ARRAY_STORAGE.get("uuid3").hashCode()); // объекты разные после обновления
         printAll();
         Resume r5 = new Resume();
         r5.setUuid("uuid5");
