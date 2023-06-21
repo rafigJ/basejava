@@ -1,7 +1,6 @@
 package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
-
 import java.util.Arrays;
 
 public abstract class AbstractArrayStorage implements Storage {
@@ -31,6 +30,7 @@ public abstract class AbstractArrayStorage implements Storage {
             System.out.printf("ERROR: a resume with a similar uuid is present in the storage; uuid: %s%n", r.getUuid());
         } else {
             doSave(r, index);
+            size++;
         }
     }
 
@@ -51,6 +51,8 @@ public abstract class AbstractArrayStorage implements Storage {
             System.out.printf("ERROR: the resume with the entered uuid is not present in the storage. uuid: %s%n", uuid);
         } else {
             doDelete(index);
+            storage[size - 1] = null;
+            size--;
         }
     }
 
