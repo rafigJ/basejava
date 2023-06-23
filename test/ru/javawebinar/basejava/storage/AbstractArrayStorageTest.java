@@ -42,6 +42,17 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void update() throws NotExistStorageException {
+        Resume r = storage.get(UUID_1);
+        Resume r2 = new Resume(UUID_1);
+        assertNotSame(r, r2);
+
+        storage.update(r2);
+        r = storage.get(UUID_1);
+        assertSame(r, r2);
+    }
+
+    @Test
+    public void updateNotExist() throws NotExistStorageException{
         assertThrows(NotExistStorageException.class, () -> storage.update(new Resume("uuid4")));
     }
 
