@@ -12,7 +12,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class AbstractArrayStorageTest {
     private final Storage storage;
-    private static final int STORAGE_LIMIT = 10000;
+
+    private static final String UUID_NOT_EXIST = "uuid_not_exist";
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
@@ -65,7 +66,7 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void updateNotExist() throws NotExistStorageException{
-        assertThrows(NotExistStorageException.class, () -> storage.update(new Resume("uuid4")));
+        assertThrows(NotExistStorageException.class, () -> storage.update(RESUME_4));
     }
 
     @Test
@@ -90,7 +91,8 @@ public abstract class AbstractArrayStorageTest {
     @Test
     public void saveNotOverflow() throws StorageException {
         storage.clear();
-        for (int i = 0; i < STORAGE_LIMIT; i++) {
+        int limit = AbstractArrayStorage.STORAGE_LIMIT;
+        for (int i = 0; i < limit; i++) {
             try {
                 storage.save(new Resume(Integer.toString(i)));
             }
@@ -103,7 +105,8 @@ public abstract class AbstractArrayStorageTest {
     @Test
     public void saveOverflow() throws StorageException {
         storage.clear();
-        for (int i = 0; i < STORAGE_LIMIT; i++) {
+        int limit = AbstractArrayStorage.STORAGE_LIMIT;
+        for (int i = 0; i < limit; i++) {
             storage.save(new Resume(Integer.toString(i)));
         }
         assertThrows(StorageException.class, () -> storage.save(new Resume()));
@@ -119,7 +122,7 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void deleteNotExist() throws NotExistStorageException {
-        assertThrows(NotExistStorageException.class, () -> storage.delete("-1"));
+        assertThrows(NotExistStorageException.class, () -> storage.delete(UUID_NOT_EXIST));
     }
 
     @Test
@@ -135,6 +138,6 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void getNotExist() throws NotExistStorageException {
-        assertThrows(NotExistStorageException.class, () -> storage.get("dummy"));
+        assertThrows(NotExistStorageException.class, () -> storage.get(UUID_NOT_EXIST));
     }
 }
