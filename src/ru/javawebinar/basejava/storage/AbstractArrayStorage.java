@@ -57,5 +57,4 @@ public abstract class AbstractArrayStorage extends AbstractStorage
     public final int size() {
         return size;
     }
-
 }
