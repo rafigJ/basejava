@@ -5,8 +5,7 @@ import ru.javawebinar.basejava.model.Resume;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ListStorage extends AbstractStorage
-        implements Storage {
+public class ListStorage extends AbstractStorage implements Storage {
     protected final List<Resume> storage = new LinkedList<>();
 
     @Override
