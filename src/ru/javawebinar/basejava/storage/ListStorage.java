@@ -14,7 +14,7 @@ public class ListStorage extends AbstractStorage implements Storage {
     }
 
     @Override
-    protected final void doUpdate(Resume r, int index) {
+    protected final void resumeReplace(Resume r, int index) {
         storage.set(index, r);
     }
 

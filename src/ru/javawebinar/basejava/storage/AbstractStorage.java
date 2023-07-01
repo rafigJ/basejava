@@ -12,10 +12,10 @@ public abstract class AbstractStorage implements Storage {
         if (!isExist(index)) {
             throw new NotExistStorageException(r.getUuid());
         }
-        doUpdate(r, index);
+        resumeReplace(r, index);
     }
 
-    protected abstract void doUpdate(Resume r, int index);
+    protected abstract void resumeReplace(Resume r, int index);
 
     @Override
     public final void save(Resume r) {
