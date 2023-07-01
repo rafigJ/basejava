@@ -1,63 +1,47 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exception.ExistStorageException;
-import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class ListStorage implements Storage {
+public class ListStorage extends AbstractStorage
+        implements Storage {
     protected final List<Resume> storage = new LinkedList<>();
 
     @Override
-    public void clear() {
+    public final void clear() {
         storage.clear();
     }
 
     @Override
-    public void update(Resume r) {
-        if(!storage.contains(r))
-            throw new NotExistStorageException(r.getUuid());
-        storage.set(storage.indexOf(r), r);
+    protected final void doUpdate(Resume r, int index) {
+        storage.set(index, r);
     }
 
     @Override
-    public void save(Resume r) {
-        if(storage.contains(r)){
-            throw new ExistStorageException(r.getUuid());
-        }
-        else {
-            storage.add(r);
-        }
+    protected final void saveResume(Resume r, int index) {
+        storage.add(r);
     }
 
     @Override
-    public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if(index < 0){
-            throw new NotExistStorageException(uuid);
-        }
+    protected final Resume getResume(int index) {
         return storage.get(index);
     }
 
-    protected int getIndex(String uuid){
-        int size = storage.size();
-        for (int i = 0; i < size; i++) {
-            if (storage.get(i).getUuid().equals(uuid))
-                return i;
-        }
-        return -1;
+    @Override
+    protected final int getIndex(String uuid) {
+        Resume r = new Resume(uuid);
+        return storage.indexOf(r);
     }
 
     @Override
-    public void delete(String uuid) {
-        int index = getIndex(uuid);
+    protected final void deleteResume(int index) {
         storage.remove(index);
     }
 
     @Override
-    public Resume[] getAll() {
+    public final Resume[] getAll() {
         return storage.toArray(new Resume[0]);
     }
 
