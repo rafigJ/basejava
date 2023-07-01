@@ -17,7 +17,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage implements St
     }
 
     @Override
-    protected void resumeReplace(Resume r, int index) {
+    protected void replaceResume(Resume r, int index) {
         storage[index] = r;
     }
 
