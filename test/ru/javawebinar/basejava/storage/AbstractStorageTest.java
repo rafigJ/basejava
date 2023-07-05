@@ -8,7 +8,7 @@ import ru.javawebinar.basejava.model.Resume;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class AbstractStorageTest {
+public abstract class AbstractStorageTest {
     protected final Storage storage;
 
     private static final String UUID_NOT_EXIST = "uuid_not_exist";

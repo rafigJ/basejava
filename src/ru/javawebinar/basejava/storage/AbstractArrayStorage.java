@@ -58,6 +58,9 @@ public abstract class AbstractArrayStorage extends AbstractStorage implements St
         return (int) searchKey > -1;
     }
 
+    @Override
+    protected abstract Integer getSearchKey(String uuid);
+
     protected abstract void saveArrayStorage(Resume r, int index);
 
     protected abstract void deleteArrayStorage(int index);

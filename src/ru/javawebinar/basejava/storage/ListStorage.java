@@ -2,11 +2,11 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage implements Storage {
-    protected final List<Resume> storage = new LinkedList<>();
+    protected final List<Resume> storage = new ArrayList<>();
 
     @Override
     public final void clear() {
@@ -29,7 +29,7 @@ public class ListStorage extends AbstractStorage implements Storage {
     }
 
     @Override
-    protected final Object getSearchKey(String uuid) {
+    protected final Integer getSearchKey(String uuid) {
         int size = size();
         for (int i = 0; i < size; i++) {
             if (storage.get(i).getUuid().equals(uuid))
