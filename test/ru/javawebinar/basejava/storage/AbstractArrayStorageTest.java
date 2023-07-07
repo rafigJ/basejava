@@ -22,8 +22,7 @@ public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
         for (int i = 0; i < STORAGE_LIMIT; i++) {
             try {
                 storage.save(new Resume(Integer.toString(i)));
-            }
-            catch (StorageException e){
+            } catch (StorageException e) {
                 fail("Storage overflowed before time");
             }
         }

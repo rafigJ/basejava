@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 class MapStorageTest extends AbstractStorageTest {
     public MapStorageTest() {
@@ -14,7 +15,7 @@ class MapStorageTest extends AbstractStorageTest {
     @Test
     public void getAll() {
         Resume[] actual = storage.getAll();
-        Arrays.sort(actual);
+        Arrays.sort(actual, Comparator.comparing(Resume::getUuid));
         Resume[] expected = {RESUME_1, RESUME_2, RESUME_3};
         Assertions.assertArrayEquals(actual, expected);
     }
