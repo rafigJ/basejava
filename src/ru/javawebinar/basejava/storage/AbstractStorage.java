@@ -32,7 +32,7 @@ public abstract class AbstractStorage implements Storage {
         deleteResume(searchKey);
     }
 
-    private Object getExistingSearchKey(String uuid){
+    private Object getExistingSearchKey(String uuid) {
         Object searchKey = getSearchKey(uuid);
         if (!isExist(searchKey)) {
             throw new NotExistStorageException(uuid);
@@ -40,7 +40,7 @@ public abstract class AbstractStorage implements Storage {
         return searchKey;
     }
 
-    private Object getNotExistingSearchKey(String uuid){
+    private Object getNotExistingSearchKey(String uuid) {
         Object searchKey = getSearchKey(uuid);
         if (isExist(searchKey)) {
             throw new ExistStorageException(uuid);
@@ -48,7 +48,7 @@ public abstract class AbstractStorage implements Storage {
         return searchKey;
     }
 
-    protected Comparator<Resume> resumeComparator(){
+    protected Comparator<Resume> resumeComparator() {
         return (r1, r2) -> {
             int nameCompared = r1.getFullName().compareTo(r2.getFullName());
             int uuidCompared = r1.getUuid().compareTo(r2.getUuid());

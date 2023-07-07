@@ -21,7 +21,7 @@ public class Resume {
         this(UUID.randomUUID().toString(), RANDOM_NAMES[R.nextInt(10)]);
     }
 
-    public Resume(String uuid){
+    public Resume(String uuid) {
         this(uuid, RANDOM_NAMES[R.nextInt(10)]);
     }
 
