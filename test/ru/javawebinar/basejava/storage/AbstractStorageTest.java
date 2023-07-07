@@ -6,6 +6,10 @@ import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class AbstractStorageTest {
@@ -16,9 +20,12 @@ public abstract class AbstractStorageTest {
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
     private static final String UUID_4 = "uuid4";
-    protected static final Resume RESUME_1 = new Resume(UUID_1);
-    protected static final Resume RESUME_2 = new Resume(UUID_2);
-    protected static final Resume RESUME_3 = new Resume(UUID_3);
+    public static final String FULL_NAME_1 = "August";
+    public static final String FULL_NAME_2 = "Bar";
+    public static final String FULL_NAME_3 = "Car";
+    protected static final Resume RESUME_1 = new Resume(UUID_1, FULL_NAME_1);
+    protected static final Resume RESUME_2 = new Resume(UUID_2, FULL_NAME_2);
+    protected static final Resume RESUME_3 = new Resume(UUID_3, FULL_NAME_3);
     protected static final Resume RESUME_4 = new Resume(UUID_4);
 
     protected AbstractStorageTest(Storage storage) {
@@ -47,8 +54,7 @@ public abstract class AbstractStorageTest {
     public void clear() {
         storage.clear();
         assertSize(0);
-        Resume[] r = new Resume[0];
-        assertArrayEquals(r, storage.getAll());
+        assertEquals(Collections.emptyList(), storage.getAllSorted());
     }
 
     @Test
@@ -68,10 +74,10 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void getAll(){
-        Resume[] actual = storage.getAll();
-        Resume[] expected = {RESUME_1, RESUME_2, RESUME_3};
-        assertArrayEquals(actual, expected);
+    public void getAllSorted(){
+        List<Resume> actual = storage.getAllSorted();
+        List<Resume> expected = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
+        assertEquals(actual, expected);
     }
 
     @Test

@@ -2,6 +2,8 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
+import java.util.Arrays;
+
 /**
  * Array based storage for Resumes
  */
@@ -25,5 +27,14 @@ public class ArrayStorage extends AbstractArrayStorage {
             }
         }
         return -1;
+    }
+
+    @Override
+    protected void sortingTempStorage(Resume[] tempStorage) {
+        Arrays.sort(tempStorage, (r1, r2) -> {
+            int nameCompared = r1.getFullName().compareTo(r2.getFullName());
+            int uuidCompared = r1.getUuid().compareTo(r2.getUuid());
+            return nameCompared != 0 ? nameCompared : uuidCompared;
+        });
     }
 }

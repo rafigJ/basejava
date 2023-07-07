@@ -3,7 +3,7 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import java.util.Arrays;
+import java.util.*;
 
 public abstract class AbstractArrayStorage extends AbstractStorage implements Storage {
     protected static final int STORAGE_LIMIT = 10000;
@@ -44,8 +44,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage implements St
     }
 
     @Override
-    public final Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, size);
+    public final List<Resume> getAllSorted() {
+        Resume[] tempStorage = new Resume[size];
+        System.arraycopy(storage, 0, tempStorage, 0, size);
+        sortingTempStorage(tempStorage);
+        return Arrays.asList(tempStorage);
     }
 
     @Override
@@ -64,4 +67,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage implements St
     protected abstract void saveArrayStorage(Resume r, int index);
 
     protected abstract void deleteArrayStorage(int index);
+
+    protected abstract void sortingTempStorage(Resume[] tempStorage);
+
 }
