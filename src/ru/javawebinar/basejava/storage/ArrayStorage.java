@@ -31,10 +31,6 @@ public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected void sortingTempStorage(Resume[] tempStorage) {
-        Arrays.sort(tempStorage, (r1, r2) -> {
-            int nameCompared = r1.getFullName().compareTo(r2.getFullName());
-            int uuidCompared = r1.getUuid().compareTo(r2.getUuid());
-            return nameCompared != 0 ? nameCompared : uuidCompared;
-        });
+        Arrays.sort(tempStorage, resumeComparator());
     }
 }

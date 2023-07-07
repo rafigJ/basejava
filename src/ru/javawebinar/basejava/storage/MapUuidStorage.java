@@ -4,7 +4,7 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.*;
 
-public class MapStorage extends AbstractStorage {
+public class MapUuidStorage extends AbstractStorage {
 
     private final Map<String, Resume> storage = new HashMap<>();
 
@@ -46,7 +46,7 @@ public class MapStorage extends AbstractStorage {
     @Override
     public List<Resume> getAllSorted() {
         List<Resume> tempList = new ArrayList<>(storage.values());
-        tempList.sort(Comparator.comparing(Resume::getFullName));
+        tempList.sort(resumeComparator());
         return tempList;
     }
 
