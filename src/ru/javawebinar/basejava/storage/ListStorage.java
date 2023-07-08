@@ -49,10 +49,8 @@ public class ListStorage extends AbstractStorage implements Storage {
     }
 
     @Override
-    public final List<Resume> getAllSorted() {
-        List<Resume> resumes = new ArrayList<>(storage);
-        resumes.sort(resumeComparator());
-        return resumes;
+    public final List<Resume> doCopyAll() {
+        return new ArrayList<>(storage);
     }
 
     @Override

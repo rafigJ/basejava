@@ -44,10 +44,9 @@ public abstract class AbstractArrayStorage extends AbstractStorage implements St
     }
 
     @Override
-    public final List<Resume> getAllSorted() {
+    public final List<Resume> doCopyAll() {
         Resume[] tempStorage = new Resume[size];
         System.arraycopy(storage, 0, tempStorage, 0, size);
-        sortingTempStorage(tempStorage);
         return Arrays.asList(tempStorage);
     }
 
@@ -67,7 +66,5 @@ public abstract class AbstractArrayStorage extends AbstractStorage implements St
     protected abstract void saveArrayStorage(Resume r, int index);
 
     protected abstract void deleteArrayStorage(int index);
-
-    protected abstract void sortingTempStorage(Resume[] tempStorage);
 
 }

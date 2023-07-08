@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.model;
 
-import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -12,17 +11,12 @@ public class Resume {
     private final String uuid;
     private String fullName;
 
-    private static final Random R = new Random();
-    private static final String[] RANDOM_NAMES = {"Пахомов Корнелий", "Орлов Григорий", "Филатов Аристарх",
-            "Горшков Степан", "Соболев Демьян", "Коновалов Аким", "Поляков Борис", "Белозёров Вольдемар",
-            "Мельников Геннадий", "Мельников Эдуард"};
-
     public Resume() {
-        this(UUID.randomUUID().toString(), RANDOM_NAMES[R.nextInt(10)]);
+        this(UUID.randomUUID().toString(), UUID.randomUUID().toString());
     }
 
-    public Resume(String uuid) {
-        this(uuid, RANDOM_NAMES[R.nextInt(10)]);
+    public Resume(String fullName) {
+        this(UUID.randomUUID().toString(), fullName);
     }
 
     public Resume(String uuid, String fullName) {

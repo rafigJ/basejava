@@ -6,36 +6,38 @@ import java.util.*;
 
 public class MapResumeStorage extends AbstractStorage {
 
-    private final Map<Resume, Resume> storage = new HashMap<>();
+    private final Map<String, Resume> storage = new HashMap<>();
 
     @Override
     protected void replaceResume(Resume r, Object searchKey) {
-        storage.replace((Resume) searchKey, r);
+        storage.replace(r.getUuid(), r);
     }
 
     @Override
     protected void saveResume(Resume r, Object searchKey) {
-        storage.put((Resume) searchKey, r);
+        storage.put(r.getUuid(), r);
     }
 
     @Override
     protected Resume getResume(Object searchKey) {
-        return storage.get((Resume) searchKey);
+        Resume r = (Resume) searchKey;
+        return storage.get(r.getUuid());
     }
 
     @Override
     protected Object getSearchKey(String uuid) {
-        return new Resume(uuid);
+        return storage.get(uuid);
     }
 
     @Override
     protected void deleteResume(Object searchKey) {
-        storage.remove((Resume) searchKey);
+        Resume r = (Resume) searchKey;
+        storage.remove(r.getUuid(), r);
     }
 
     @Override
     protected boolean isExist(Object searchKey) {
-        return storage.containsKey((Resume) searchKey);
+        return storage.containsValue((Resume) searchKey);
     }
 
     @Override
@@ -44,10 +46,8 @@ public class MapResumeStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        List<Resume> tempList = new ArrayList<>(storage.values());
-        tempList.sort(resumeComparator());
-        return tempList;
+    public List<Resume> doCopyAll() {
+        return new ArrayList<>(storage.values());
     }
 
     @Override

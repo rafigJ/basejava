@@ -60,7 +60,7 @@ public abstract class AbstractStorageTest {
     @Test
     public void update() throws NotExistStorageException {
         Resume r = storage.get(UUID_1);
-        Resume r2 = new Resume(UUID_1);
+        Resume r2 = new Resume(UUID_1, " ");
         assertNotSame(r, r2);
 
         storage.update(r2);
@@ -89,7 +89,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void saveExist() throws ExistStorageException {
-        assertThrows(ExistStorageException.class, () -> storage.save(new Resume(UUID_1)));
+        assertThrows(ExistStorageException.class, () -> storage.save(RESUME_1));
     }
 
 
