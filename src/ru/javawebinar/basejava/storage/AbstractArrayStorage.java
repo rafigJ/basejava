@@ -47,7 +47,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage implements St
     public final List<Resume> doCopyAll() {
         Resume[] tempStorage = new Resume[size];
         System.arraycopy(storage, 0, tempStorage, 0, size);
-        return Arrays.asList(tempStorage);
+        return new ArrayList<>(Arrays.asList(tempStorage));
     }
 
     @Override

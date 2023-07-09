@@ -20,8 +20,7 @@ public class MapResumeStorage extends AbstractStorage {
 
     @Override
     protected Resume getResume(Object searchKey) {
-        Resume r = (Resume) searchKey;
-        return storage.get(r.getUuid());
+        return (Resume) searchKey;
     }
 
     @Override
@@ -32,12 +31,12 @@ public class MapResumeStorage extends AbstractStorage {
     @Override
     protected void deleteResume(Object searchKey) {
         Resume r = (Resume) searchKey;
-        storage.remove(r.getUuid(), r);
+        storage.remove(r.getUuid());
     }
 
     @Override
     protected boolean isExist(Object searchKey) {
-        return storage.containsValue((Resume) searchKey);
+        return searchKey != null;
     }
 
     @Override
