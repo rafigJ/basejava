@@ -1,5 +1,6 @@
 package ru.javawebinar.basejava.model;
 
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -20,6 +21,8 @@ public class Resume {
     }
 
     public Resume(String uuid, String fullName) {
+        Objects.requireNonNull(uuid, "Uuid not be Null");
+        Objects.requireNonNull(fullName, "fullName not be Null");
         this.uuid = uuid;
         this.fullName = fullName;
     }
@@ -38,7 +41,7 @@ public class Resume {
 
     @Override
     public String toString() {
-        return uuid + " " + fullName;
+        return uuid + '(' + fullName + ')';
     }
 
     @Override
