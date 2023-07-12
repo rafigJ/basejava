@@ -15,7 +15,7 @@ public class ListStorage extends AbstractStorage<Integer> implements Storage {
 
     @Override
     protected final void replaceResume(Resume r, Integer searchKey) {
-        storage.set((int) searchKey, r);
+        storage.set(searchKey, r);
     }
 
     @Override
