@@ -14,5 +14,6 @@ public class MainString {
         String str3 = "c";
         String str2 = ("ab" + str3).intern();
         System.out.println(str1 == str2);
+        System.out.println("DbMG_38BBgaI0Kv6kzGK".length());
     }
 }

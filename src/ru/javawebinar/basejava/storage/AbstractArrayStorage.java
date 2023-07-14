@@ -24,6 +24,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> impl
     @Override
     public final void saveResume(Resume r, Integer searchKey) {
         if (size == STORAGE_LIMIT) {
+            LOG.warning("Storage overflow " + r.getUuid());
             throw new StorageException("Storage overflow ", r.getUuid());
         } else {
             saveArrayStorage(r, searchKey);
