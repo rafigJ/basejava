@@ -1,5 +1,7 @@
 package ru.javawebinar.basejava.model;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -7,10 +9,10 @@ import java.util.UUID;
  * Initial resume class
  */
 public class Resume {
-
     // Unique identifier
     private final String uuid;
-    private String fullName;
+    private final String fullName;
+    private final Map<SectionType, Section> sectionMap;
 
     public Resume() {
         this(UUID.randomUUID().toString(), UUID.randomUUID().toString());
@@ -25,6 +27,7 @@ public class Resume {
         Objects.requireNonNull(fullName, "fullName not be Null");
         this.uuid = uuid;
         this.fullName = fullName;
+        sectionMap = new HashMap<>();
     }
 
     public String getUuid() {
@@ -35,8 +38,8 @@ public class Resume {
         return fullName;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void addInfoAtSection(SectionType sectionType){
+
     }
 
     @Override
