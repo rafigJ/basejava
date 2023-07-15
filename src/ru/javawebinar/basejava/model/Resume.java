@@ -1,9 +1,6 @@
 package ru.javawebinar.basejava.model;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Initial resume class
@@ -28,6 +25,7 @@ public class Resume {
         this.uuid = uuid;
         this.fullName = fullName;
         sectionMap = new HashMap<>();
+        initializeSectionMap();
     }
 
     public String getUuid() {
@@ -38,8 +36,16 @@ public class Resume {
         return fullName;
     }
 
-    public void addInfoAtSection(SectionType sectionType){
-
+    public void initializeSectionMap() {
+        for (SectionType type : SectionType.values()) {
+            if (type == SectionType.PERSONAL || type == SectionType.OBJECTIVE) {
+                sectionMap.put(type, new TextSection(type.getTitle()));
+            } else if (type == SectionType.ACHIEVEMENT || type == SectionType.QUALIFICATIONS) {
+                sectionMap.put(type, new MarkTextSection(type.getTitle()));
+            } else {
+                sectionMap.put(type, new DataTextSection(type.getTitle()));
+            }
+        }
     }
 
     @Override

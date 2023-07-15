@@ -16,8 +16,5 @@ public class ResumeTestData {
         ((DataTextSection) map.get(SectionType.EDUCATION))
                 .addDataText("10/2003", "11/2029", "Header", "Text field");
 
-        for (Map.Entry<SectionType, Section> m: map.entrySet()) {
-            System.out.printf("%s = %s\n", m.getKey().getTitle(), m.getValue().getInsideData());
-        }
     }
 }
