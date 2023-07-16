@@ -1,6 +1,6 @@
 package ru.javawebinar.basejava.model;
 
-public class TextSection implements Section<String>{
+public class TextSection implements Section{
     private final String title;
     private String text;
 
@@ -8,7 +8,7 @@ public class TextSection implements Section<String>{
         this.title = title;
     }
 
-    public void setText(String text) {
+    public void addDataIntoSection(String text) {
         this.text = text;
     }
 
@@ -18,5 +18,10 @@ public class TextSection implements Section<String>{
 
     public String getInsideData() {
         return text;
+    }
+
+    @Override
+    public String toString() {
+        return title + " " + text;
     }
 }

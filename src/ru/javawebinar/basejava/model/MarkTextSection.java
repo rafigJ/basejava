@@ -3,7 +3,7 @@ package ru.javawebinar.basejava.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MarkTextSection implements Section<List<String>>{
+public class MarkTextSection implements Section {
     private final String title;
     private final List<String> markText;
 
@@ -17,11 +17,16 @@ public class MarkTextSection implements Section<List<String>>{
     }
 
     @Override
-    public List<String> getInsideData() {
-        return markText;
+    public String getInsideData() {
+        return markText.toString();
     }
 
-    public void addText(String text){
+    public void addDataIntoSection(String text) {
         markText.add(text);
+    }
+
+    @Override
+    public String toString() {
+        return title + " " + markText;
     }
 }

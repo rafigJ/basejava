@@ -3,7 +3,7 @@ package ru.javawebinar.basejava.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DataTextSection implements Section<List<DataTextSection.DataText>>{
+public class DataTextSection implements Section{
     private final String title;
     private final List<DataText> dataTextList;
 
@@ -16,13 +16,27 @@ public class DataTextSection implements Section<List<DataTextSection.DataText>>{
         return title;
     }
 
+    @Override
+    public void addDataIntoSection(String text) {
+        String[] data = text.split(";");
+        if (data.length != 4) {
+            return;
+        }
+        addDataText(data[0], data[1], data[2], data[3]);
+    }
+
     public void addDataText(String fromTime, String toTime, String header, String text){
         dataTextList.add(new DataText(fromTime, toTime, header, text));
     }
 
     @Override
-    public List<DataText> getInsideData() {
-        return dataTextList;
+    public String getInsideData() {
+        return dataTextList.toString();
+    }
+
+    @Override
+    public String toString() {
+        return title + ' ' + dataTextList;
     }
 
     protected static class DataText {
@@ -68,6 +82,14 @@ public class DataTextSection implements Section<List<DataTextSection.DataText>>{
 
         public void setText(String text) {
             this.text = text;
+        }
+
+        @Override
+        public String toString() {
+            return "fromTime='" + fromTime + '\'' +
+                    ", toTime='" + toTime + '\'' +
+                    ", header='" + header + '\'' +
+                    ", text='" + text + '\'';
         }
     }
 

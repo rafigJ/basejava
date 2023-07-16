@@ -1,6 +1,9 @@
 package ru.javawebinar.basejava.model;
 
-public interface Section<T> {
+public interface Section {
     String getTitle();
-    T getInsideData();
+
+    String getInsideData();
+
+    void addDataIntoSection(String text);
 }

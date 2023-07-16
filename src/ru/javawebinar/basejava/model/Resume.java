@@ -10,10 +10,7 @@ public class Resume {
     private final String uuid;
     private final String fullName;
     private final Map<SectionType, Section> sectionMap;
-
-    public Resume() {
-        this(UUID.randomUUID().toString(), UUID.randomUUID().toString());
-    }
+    private final Map<ContactType, String> contactMap;
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -25,7 +22,7 @@ public class Resume {
         this.uuid = uuid;
         this.fullName = fullName;
         sectionMap = new HashMap<>();
-        initializeSectionMap();
+        contactMap = new HashMap<>();
     }
 
     public String getUuid() {
@@ -36,16 +33,51 @@ public class Resume {
         return fullName;
     }
 
-    public void initializeSectionMap() {
-        for (SectionType type : SectionType.values()) {
-            if (type == SectionType.PERSONAL || type == SectionType.OBJECTIVE) {
-                sectionMap.put(type, new TextSection(type.getTitle()));
-            } else if (type == SectionType.ACHIEVEMENT || type == SectionType.QUALIFICATIONS) {
-                sectionMap.put(type, new MarkTextSection(type.getTitle()));
-            } else {
-                sectionMap.put(type, new DataTextSection(type.getTitle()));
-            }
+    public void addContactInfo(ContactType type, String text){
+        contactMap.put(type, text);
+    }
+
+    public void addInfoAtSection(SectionType type, String text){
+        if (!sectionMap.containsKey(type)) {
+            addSection(type);
         }
+        sectionMap.get(type).addDataIntoSection(text);
+    }
+
+    private void addSection(SectionType type){
+        switch (type) {
+            case PERSONAL:
+            case OBJECTIVE:
+                sectionMap.put(type, new TextSection(type.getTitle()));
+                break;
+            case ACHIEVEMENT:
+            case QUALIFICATIONS:
+                sectionMap.put(type, new MarkTextSection(type.getTitle()));
+                break;
+            case EXPERIENCE:
+            case EDUCATION:
+                sectionMap.put(type, new DataTextSection(type.getTitle()));
+                break;
+        }
+    }
+
+    public Map<SectionType, Section> getAllSectionInfo(){
+        return sectionMap;
+    }
+
+    public String getSectionInfo(SectionType type){
+        if (sectionMap.containsKey(type)){
+            return sectionMap.get(type).getInsideData();
+        }
+        return null;
+    }
+
+    public Map<ContactType, String> getAllContactInfo(){
+        return contactMap;
+    }
+
+    public String getContactInfo(ContactType type){
+        return contactMap.get(type);
     }
 
     @Override
