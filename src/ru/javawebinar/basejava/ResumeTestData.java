@@ -67,8 +67,8 @@ public class ResumeTestData {
         for (Map.Entry<ContactType, String> s : r.getAllContactInfo().entrySet()) {
             System.out.println(s.getKey() + ":" + s.getValue());
         }
-        for (Map.Entry<SectionType, Section> info : r.getAllSection().entrySet()) {
-            System.out.println(info.getKey() + ":" + info.getValue().getInsideData());
+        for (SectionType s: SectionType.values()) {
+            System.out.println(s.getTitle() + ':' + r.getSection(s));
         }
     }
 
