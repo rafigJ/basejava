@@ -21,14 +21,7 @@ public class CompanySection implements Section {
     }
 
     @Override
-    public String getInsideData() {
-        return companyList.toString();
-    }
-
-    @Override
-    public void addDataIntoSection(String text) {
-
-    }
+    public void addDataIntoSection(String text) {}
 
     @Override
     public String toString() {
@@ -45,14 +38,6 @@ public class CompanySection implements Section {
 
         public void addPeriodAtList(LocalDate startDate, LocalDate endDate, String title, String description) {
             periods.add(new Period(startDate, endDate, title, description));
-        }
-
-        public String getCompanyName() {
-            return companyName;
-        }
-
-        public List<Period> getPeriods() {
-            return periods;
         }
 
         @Override

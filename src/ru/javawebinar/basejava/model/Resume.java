@@ -76,16 +76,8 @@ public class Resume {
         }
     }
 
-    public Map<SectionType, Section> getAllSection(){
-        return sectionMap;
-    }
-
     public Section getSection(SectionType type){
         return sectionMap.get(type);
-    }
-
-    public Map<ContactType, String> getAllContactInfo(){
-        return contactMap;
     }
 
     public String getContactInfo(ContactType type){

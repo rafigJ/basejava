@@ -1,9 +1,11 @@
 package ru.javawebinar.basejava;
 
-import ru.javawebinar.basejava.model.*;
+import ru.javawebinar.basejava.model.CompanySection;
+import ru.javawebinar.basejava.model.ContactType;
+import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.model.SectionType;
 
 import java.time.LocalDate;
-import java.util.Map;
 
 public class ResumeTestData {
 
@@ -64,8 +66,8 @@ public class ResumeTestData {
 
         System.out.println(r.getFullName());
 
-        for (Map.Entry<ContactType, String> s : r.getAllContactInfo().entrySet()) {
-            System.out.println(s.getKey() + ":" + s.getValue());
+        for (ContactType c:ContactType.values()) {
+            System.out.println(c.getTitle() + ':' + r.getContactInfo(c));
         }
         for (SectionType s: SectionType.values()) {
             System.out.println(s.getTitle() + ':' + r.getSection(s));

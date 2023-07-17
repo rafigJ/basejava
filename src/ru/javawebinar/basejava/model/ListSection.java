@@ -11,11 +11,6 @@ public class ListSection implements Section {
     }
 
     @Override
-    public String getInsideData() {
-        return list.toString();
-    }
-
-    @Override
     public void addDataIntoSection(String text) {
         list.add(text);
     }

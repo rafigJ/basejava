@@ -9,11 +9,6 @@ public class TextSection implements Section{
     }
 
     @Override
-    public String getInsideData() {
-        return text;
-    }
-
-    @Override
     public String toString() {
         return text;
     }
