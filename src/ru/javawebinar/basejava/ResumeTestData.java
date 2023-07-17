@@ -1,27 +1,13 @@
 package ru.javawebinar.basejava;
 
-import ru.javawebinar.basejava.model.ContactType;
-import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.model.Section;
-import ru.javawebinar.basejava.model.SectionType;
+import ru.javawebinar.basejava.model.*;
 
+import java.time.LocalDate;
 import java.util.Map;
 
 public class ResumeTestData {
 
     public static void main(String[] args) {
-        Resume resume = new Resume("Александр Соколов");
-        resume.addInfoAtSection(SectionType.PERSONAL, "Я считаю, что мои личные качества включают в себя ответственность, настойчивость и адаптивность. Я всегда стремлюсь брать на себя ответственность за свои действия и принимать решения, основанные на разумных обстоятельствах. Настойчивость помогает мне преодолевать препятствия и достигать поставленных целей, несмотря на трудности. Я также гибко адаптируюсь к новым ситуациям и быстро учусь, что позволяет мне эффективно работать в различных обстоятельствах.");
-        resume.addInfoAtSection(SectionType.OBJECTIVE, "Моя позиция в настоящее время заключается в том, что я ищу возможность занять позицию, связанную с моими навыками и интересами. Я стремлюсь найти работу, где смогу проявить свои способности и внести значимый вклад в команду или организацию. Я открыт для различных возможностей и готов рассмотреть предложения, которые позволят мне развиваться профессионально и достигать новых высот.");
-
-        resume.addInfoAtSection(SectionType.ACHIEVEMENT, "Участие в международной конференции: Я был выбран для презентации на международной конференции, где представил свои исследования и получил положительные отзывы от экспертов в своей области.");
-        resume.addInfoAtSection(SectionType.ACHIEVEMENT, "Премия за лидерство: Моя команда признала мое влияние и лидерские качества, и я получил премию за лучшего лидера внутри организации.");
-        resume.addInfoAtSection(SectionType.ACHIEVEMENT, "Опубликованные статьи: Мои исследования были опубликованы в рецензируемых научных журналах, что подтверждает мою экспертность в выбранной области.");
-
-        resume.addInfoAtSection(SectionType.QUALIFICATIONS, "Бакалавр наук в области компьютерных наук: Я успешно завершил программу бакалавриата в области компьютерных наук с отличными результатами, демонстрируя глубокое понимание теории и практических навыков в программировании и разработке программного обеспечения.");
-        resume.addInfoAtSection(SectionType.QUALIFICATIONS, "Сертификаты профессионального развития: Я получил ряд сертификатов, связанных с моей областью специализации, таких как сертификат по анализу данных и сертификат по управлению проектами, что демонстрирует мою непрерывную жажду обучения и стремление к профессиональному росту.");
-        resume.addInfoAtSection(SectionType.QUALIFICATIONS, "Рабочий опыт: Я имею опыт работы в крупной технологической компании, где я занимал должность разработчика программного обеспечения и успешно выполнял задачи в рамках проектов высокой сложности.");
-
         Resume r = new Resume("Григорий Кислин");
         r.addContactInfo(ContactType.PHONE_NUMBER, "+7(921) 855-0482");
         r.addContactInfo(ContactType.SKYPE, "skype:grigory.kislin");
@@ -47,17 +33,50 @@ public class ResumeTestData {
         r.addInfoAtSection(SectionType.QUALIFICATIONS, "DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle, MySQL, SQLite, MS SQL, HSQLDB");
         r.addInfoAtSection(SectionType.QUALIFICATIONS, "Languages: Java, Scala, Python/Jython/PL-Python, JavaScript, Groovy");
 
-        r.addInfoAtSection(SectionType.EXPERIENCE, "10/2014;01/2016;Старший разработчик (backend);Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.");
-        r.addInfoAtSection(SectionType.EXPERIENCE, "04/2012;10/2014;Java архитектор;Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, ведение CI (Jenkins), миграция базы (кастомизация Flyway), конфигурирование системы (pgBoucer, Nginx), AAA via SSO. Архитектура БД и серверной части системы. Разработка интергационных сервисов: CMIS, BPMN2, 1C (WebServices), сервисов общего назначения (почта, экспорт в pdf, doc, html). Интеграция Alfresco JLAN для online редактирование из браузера документов MS Office. Maven + plugin development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, OpenCmis, Bonita, Python scripting, Unix shell remote scripting via ssh tunnels, PL/Python");
-        r.addInfoAtSection(SectionType.EXPERIENCE, "12/2010;04/2012;Ведущий программист;Участие в проекте Deutsche Bank CRM (WebLogic, Hibernate, Spring, Spring MVC, SmartGWT, GWT, Jasper, Oracle). Реализация клиентской и серверной части CRM. Реализация RIA-приложения для администрирования, мониторинга и анализа результатов в области алгоритмического трейдинга. JPA, Spring, Spring-MVC, GWT, ExtGWT (GXT), Highstock, Commet, HTML5.");
+        CompanySection.Company company = new CompanySection.Company("Java Online Projects");
+        company.addPeriodAtList(parse("10/2013"), LocalDate.now(), "Автор проекта.", "Создание, организация и проведение Java онлайн проектов и стажировок.");
+        r.addInfoAtSection(SectionType.EXPERIENCE, company);
+
+        company = new CompanySection.Company("Wrike");
+        company.addPeriodAtList(parse("10/2014"), parse("01/2016"), "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.");
+        r.addInfoAtSection(SectionType.EXPERIENCE, company);
+
+        company = new CompanySection.Company("RIT Center");
+        company.addPeriodAtList(parse("04/2012"), parse("10/2014"), "Java архитектор", "Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, ведение CI (Jenkins), миграция базы (кастомизация Flyway), конфигурирование системы (pgBoucer, Nginx), AAA via SSO. Архитектура БД и серверной части системы. Разработка интергационных сервисов: CMIS, BPMN2, 1C (WebServices), сервисов общего назначения (почта, экспорт в pdf, doc, html). Интеграция Alfresco JLAN для online редактирование из браузера документов MS Office. Maven + plugin development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, OpenCmis, Bonita, Python scripting, Unix shell remote scripting via ssh tunnels, PL/Python");
+        r.addInfoAtSection(SectionType.EXPERIENCE, company);
+
+        company = new CompanySection.Company("Luxoft (Deutsche Bank)");
+        company.addPeriodAtList(parse("12/2010"), parse("04/2012"), "Ведущий программист", "Участие в проекте Deutsche Bank CRM (WebLogic, Hibernate, Spring, Spring MVC, SmartGWT, GWT, Jasper, Oracle). Реализация клиентской и серверной части CRM. Реализация RIA-приложения для администрирования, мониторинга и анализа результатов в области алгоритмического трейдинга. JPA, Spring, Spring-MVC, GWT, ExtGWT (GXT), Highstock, Commet, HTML5.");
+        r.addInfoAtSection(SectionType.EXPERIENCE, company);
+
+        company = new CompanySection.Company("Coursera");
+        company.addPeriodAtList(parse("03/2013"), parse("05/2013"), "'Functional Programming Principles in Scala' by Martin Odersky", null);
+        r.addInfoAtSection(SectionType.EDUCATION, company);
+
+        company = new CompanySection.Company("Coursera");
+        company.addPeriodAtList(parse("03/2013"), parse("05/2013"), "'Functional Programming Principles in Scala' by Martin Odersky", null);
+        r.addInfoAtSection(SectionType.EDUCATION, company);
+
+        company = new CompanySection.Company("Luxoft");
+        company.addPeriodAtList(parse("03/2011"), parse("04/2011"), "Курс 'Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.'", null);
+        r.addInfoAtSection(SectionType.EDUCATION, company);
+
 
         System.out.println(r.getFullName());
 
         for (Map.Entry<ContactType, String> s : r.getAllContactInfo().entrySet()) {
             System.out.println(s.getKey() + ":" + s.getValue());
         }
-        for (Map.Entry<SectionType, Section> info : r.getAllSectionInfo().entrySet()) {
+        for (Map.Entry<SectionType, Section> info : r.getAllSection().entrySet()) {
             System.out.println(info.getKey() + ":" + info.getValue().getInsideData());
         }
+    }
+
+    private static LocalDate parse(String monthYear){
+        String[] str = monthYear.split("/");
+        if (str.length != 2) {
+            throw new RuntimeException(monthYear + "must be in format MM/YYYY");
+        }
+        return LocalDate.parse(str[1].concat("-"+str[0]).concat("-03"));
     }
 }

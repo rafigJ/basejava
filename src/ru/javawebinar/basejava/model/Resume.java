@@ -9,8 +9,8 @@ public class Resume {
     // Unique identifier
     private final String uuid;
     private final String fullName;
-    private final Map<SectionType, Section> sectionMap;
-    private final Map<ContactType, String> contactMap;
+    private final Map<SectionType, Section> sectionMap = new EnumMap<>(SectionType.class);
+    private final Map<ContactType, String> contactMap = new EnumMap<>(ContactType.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -21,8 +21,6 @@ public class Resume {
         Objects.requireNonNull(fullName, "fullName not be Null");
         this.uuid = uuid;
         this.fullName = fullName;
-        sectionMap = new HashMap<>();
-        contactMap = new HashMap<>();
     }
 
     public String getUuid() {
@@ -38,38 +36,52 @@ public class Resume {
     }
 
     public void addInfoAtSection(SectionType type, String text){
+        if (isCompanySectionType(type)){
+            throw new RuntimeException(String.format("%s is Company section type ", type));
+        }
         if (!sectionMap.containsKey(type)) {
             addSection(type);
         }
         sectionMap.get(type).addDataIntoSection(text);
     }
 
+    public void addInfoAtSection(SectionType type, CompanySection.Company company){
+        if(!isCompanySectionType(type)){
+            throw new RuntimeException(String.format("%s is NOT Company section type ", type));
+        }
+        if (!sectionMap.containsKey(type)) {
+            addSection(type);
+        }
+        sectionMap.get(type).addDataIntoSection(company);
+    }
+
+    private boolean isCompanySectionType(SectionType type){
+        return type == SectionType.EXPERIENCE || type == SectionType.EDUCATION;
+    }
+
     private void addSection(SectionType type){
         switch (type) {
             case PERSONAL:
             case OBJECTIVE:
-                sectionMap.put(type, new TextSection(type.getTitle()));
+                sectionMap.put(type, new TextSection());
                 break;
             case ACHIEVEMENT:
             case QUALIFICATIONS:
-                sectionMap.put(type, new MarkTextSection(type.getTitle()));
+                sectionMap.put(type, new ListSection());
                 break;
             case EXPERIENCE:
             case EDUCATION:
-                sectionMap.put(type, new DataTextSection(type.getTitle()));
+                sectionMap.put(type, new CompanySection());
                 break;
         }
     }
 
-    public Map<SectionType, Section> getAllSectionInfo(){
+    public Map<SectionType, Section> getAllSection(){
         return sectionMap;
     }
 
-    public String getSectionInfo(SectionType type){
-        if (sectionMap.containsKey(type)){
-            return sectionMap.get(type).getInsideData();
-        }
-        return null;
+    public Section getSection(SectionType type){
+        return sectionMap.get(type);
     }
 
     public Map<ContactType, String> getAllContactInfo(){
