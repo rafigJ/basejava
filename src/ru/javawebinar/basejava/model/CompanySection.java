@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.model;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,21 +27,18 @@ public class CompanySection implements Section {
         return companyList.toString();
     }
 
-    public static class Company {
-        private final String companyName;
-        private final List<Period> periods = new ArrayList<>();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        public Company(String companyName) {
-            this.companyName = companyName;
-        }
+        CompanySection that = (CompanySection) o;
 
-        public void addPeriodAtList(LocalDate startDate, LocalDate endDate, String title, String description) {
-            periods.add(new Period(startDate, endDate, title, description));
-        }
+        return companyList.equals(that.companyList);
+    }
 
-        @Override
-        public String toString() {
-            return companyName + ':' + periods;
-        }
+    @Override
+    public int hashCode() {
+        return companyList.hashCode();
     }
 }

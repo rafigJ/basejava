@@ -37,7 +37,7 @@ public class Resume {
 
     public void addInfoAtSection(SectionType type, String text){
         if (isCompanySectionType(type)){
-            throw new RuntimeException(String.format("%s is Company section type ", type));
+            throw new RuntimeException(String.format("%s is Company section type but expected Text/List-Section type", type));
         }
         if (!sectionMap.containsKey(type)) {
             addSection(type);
@@ -45,7 +45,7 @@ public class Resume {
         sectionMap.get(type).addDataIntoSection(text);
     }
 
-    public void addInfoAtSection(SectionType type, CompanySection.Company company){
+    public void addInfoAtSection(SectionType type, Company company){
         if(!isCompanySectionType(type)){
             throw new RuntimeException(String.format("%s is NOT Company section type ", type));
         }
