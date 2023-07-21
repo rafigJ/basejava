@@ -3,25 +3,16 @@ package ru.javawebinar.basejava.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListSection implements Section {
-    private final List<String> list;
+public class ListSection extends Section {
+    private final List<String> list = new ArrayList<>();
 
-    public ListSection() {
-        this.list = new ArrayList<>();
-    }
-
-    @Override
-    public void addDataIntoSection(String text) {
-        list.add(text);
+    public List<String> getList() {
+        return list;
     }
 
     @Override
     public String toString() {
         return list.toString();
-    }
-
-    public List<String> getList() {
-        return list;
     }
 
     @Override

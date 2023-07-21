@@ -42,7 +42,19 @@ public class Resume {
         if (!sectionMap.containsKey(type)) {
             addSection(type);
         }
-        sectionMap.get(type).addDataIntoSection(text);
+
+        switch (type){
+            case PERSONAL:
+            case OBJECTIVE:
+                TextSection textSection = (TextSection) sectionMap.get(type);
+                textSection.setText(text);
+                break;
+            case ACHIEVEMENT:
+            case QUALIFICATIONS:
+                ListSection listSection = (ListSection) sectionMap.get(type);
+                listSection.getList().add(text);
+                break;
+        }
     }
 
     public void addInfoAtSection(SectionType type, Company company){
@@ -52,7 +64,8 @@ public class Resume {
         if (!sectionMap.containsKey(type)) {
             addSection(type);
         }
-        sectionMap.get(type).addDataIntoSection(company);
+        CompanySection companySection = (CompanySection) sectionMap.get(type);
+        companySection.getCompanies().add(company);
     }
 
     private boolean isCompanySectionType(SectionType type){

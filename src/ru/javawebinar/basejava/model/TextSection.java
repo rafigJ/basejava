@@ -1,19 +1,18 @@
 package ru.javawebinar.basejava.model;
 
-public class TextSection implements Section{
+public class TextSection extends Section{
     private String text;
 
-    @Override
-    public void addDataIntoSection(String text) {
+    public void setText(String text) {
         this.text = text;
+    }
+
+    public String getText() {
+        return text;
     }
 
     @Override
     public String toString() {
-        return text;
-    }
-
-    public String getText() {
         return text;
     }
 

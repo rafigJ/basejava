@@ -1,8 +1,5 @@
 package ru.javawebinar.basejava.model;
 
-public interface Section {
+public abstract class Section {
 
-    void addDataIntoSection(String text);
-
-    default void addDataIntoSection(Company company){}
 }

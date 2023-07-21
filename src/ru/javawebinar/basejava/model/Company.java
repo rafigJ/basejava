@@ -20,10 +20,6 @@ public class Company {
         this.website = website;
     }
 
-    public void addPeriodAtList(LocalDate startDate, LocalDate endDate, String title, String description) {
-        periods.add(new Period(startDate, endDate, title, description));
-    }
-
     public String getCompanyName() {
         return companyName;
     }

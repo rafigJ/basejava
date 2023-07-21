@@ -3,28 +3,16 @@ package ru.javawebinar.basejava.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompanySection implements Section {
-    private final List<Company> companyList;
+public class CompanySection extends Section {
+    private final List<Company> companies = new ArrayList<>();
 
-    public CompanySection() {
-        this.companyList = new ArrayList<>();
+    public List<Company> getCompanies() {
+        return companies;
     }
-
-    public List<Company> getCompanyList() {
-        return companyList;
-    }
-
-    @Override
-    public void addDataIntoSection(Company company) {
-        companyList.add(company);
-    }
-
-    @Override
-    public void addDataIntoSection(String text) {}
 
     @Override
     public String toString() {
-        return companyList.toString();
+        return companies.toString();
     }
 
     @Override
@@ -34,11 +22,11 @@ public class CompanySection implements Section {
 
         CompanySection that = (CompanySection) o;
 
-        return companyList.equals(that.companyList);
+        return companies.equals(that.companies);
     }
 
     @Override
     public int hashCode() {
-        return companyList.hashCode();
+        return companies.hashCode();
     }
 }
