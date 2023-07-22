@@ -8,7 +8,7 @@ import java.util.Queue;
 
 public class MainFile {
     public static void main(String[] args) throws IOException {
-        String pathname = "./src";
+        String pathname = ".";
         File file = new File(pathname);
         System.out.println(file.getCanonicalPath());
 //        File dir = new File("./src/ru/javawebinar/basejava");
