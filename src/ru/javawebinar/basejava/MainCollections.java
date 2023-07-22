@@ -15,8 +15,6 @@ public class MainCollections {
     private static final Resume RESUME_3 = new Resume(UUID_3);
 
     public static void main(String[] args) {
-        System.out.println(Math.round(2.545));
-
         Collection<Resume> collection = new ArrayList<>();
         collection.add(RESUME_1);
         collection.add(RESUME_2);
@@ -44,11 +42,11 @@ public class MainCollections {
 
         // Bad!
         for (String uuid : map.keySet()) {
-            System.out.println(map.get(uuid));
+//            System.out.println(map.get(uuid));
         }
 
         for (Map.Entry<String, Resume> entry : map.entrySet()) {
-            System.out.println(entry.getValue());
+//            System.out.println(entry.getValue());
         }
     }
 }
