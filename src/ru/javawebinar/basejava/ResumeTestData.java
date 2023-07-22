@@ -1,20 +1,86 @@
 package ru.javawebinar.basejava;
 
-import ru.javawebinar.basejava.model.*;
+import ru.javawebinar.basejava.model.Company;
+import ru.javawebinar.basejava.model.ContactType;
+import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.model.SectionType;
 
 import java.time.LocalDate;
+import java.util.Random;
 
 public class ResumeTestData {
 
+    public static Resume getFullRandomResume(String uuid, String fullName) {
+        Resume resume = new Resume(uuid, fullName);
+        addContacts(resume);
+        addSectionData(resume);
+        return resume;
+    }
+
+    private static void addContacts(Resume r) {
+        r.addContactInfo(ContactType.PHONE_NUMBER, getRandomNum());
+        r.addContactInfo(ContactType.SKYPE, getRandomString(10));
+        r.addContactInfo(ContactType.EMAIL, getRandomString(10));
+        r.addContactInfo(ContactType.LINKEDIN, getRandomString(10));
+        r.addContactInfo(ContactType.GITHUB, getRandomString(10));
+        r.addContactInfo(ContactType.STACKOVERFLOW, getRandomString(10));
+        r.addContactInfo(ContactType.HOMEPAGE, getRandomString(10));
+    }
+
+    private static void addSectionData(Resume r) {
+        r.addInfoAtSection(SectionType.PERSONAL, getRandomString(200));
+        r.addInfoAtSection(SectionType.OBJECTIVE, getRandomString(200));
+
+        for (int i = 0; i < 4; i++) {
+            r.addInfoAtSection(SectionType.ACHIEVEMENT, getRandomString(200));
+            r.addInfoAtSection(SectionType.QUALIFICATIONS, getRandomString(200));
+
+            Company company = new Company(getRandomString(20));
+            LocalDate date = getRandomTime();
+            company.getPeriods().add(new Company.Period(date, date.plusYears(2), getRandomString(16),
+                    getRandomString(100)));
+            r.addInfoAtSection(SectionType.EXPERIENCE, company);
+
+            company = new Company(getRandomString(20));
+            date = getRandomTime();
+            company.getPeriods().add(new Company.Period(date, date.plusYears(2), getRandomString(16),
+                    getRandomString(100)));
+            r.addInfoAtSection(SectionType.EDUCATION, company);
+        }
+    }
+
+    private static String getRandomNum() {
+        int leftLimit = 48; // letter '1'
+        int rightLimit = 57; // letter '9'
+        int targetStringLength = 10;
+        Random random = new Random();
+
+        return random.ints(leftLimit, rightLimit + 1)
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+    }
+
+    private static String getRandomString(int targetStringLength) {
+        int leftLimit = 97; // letter 'a'
+        int rightLimit = 122; // letter 'z'
+        Random random = new Random();
+
+        return random.ints(leftLimit, rightLimit + 1)
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+    }
+
+    private static LocalDate getRandomTime(){
+        Random random = new Random();
+        int month = random.nextInt(12) + 1;
+        int year = random.nextInt(120) + 1970;
+        return LocalDate.of(year, month, random.nextInt(9) + 1);
+    }
+
     public static void main(String[] args) {
         Resume r = new Resume("Григорий Кислин");
-        r.addContactInfo(ContactType.PHONE_NUMBER, "+7(921) 855-0482");
-        r.addContactInfo(ContactType.SKYPE, "skype:grigory.kislin");
-        r.addContactInfo(ContactType.EMAIL, "gkislin@yandex.ru");
-        r.addContactInfo(ContactType.LINKEDIN, "https://www.linkedin.com/in/gkislin");
-        r.addContactInfo(ContactType.GITHUB, "https://github.com/gkislin");
-        r.addContactInfo(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
-        r.addContactInfo(ContactType.HOMEPAGE, "http://gkislin.ru/");
 
         r.addInfoAtSection(SectionType.PERSONAL, "Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
         r.addInfoAtSection(SectionType.OBJECTIVE, "Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.");
@@ -87,11 +153,11 @@ public class ResumeTestData {
         }
     }
 
-    private static LocalDate parse(String monthYear){
+    private static LocalDate parse(String monthYear) {
         String[] str = monthYear.split("/");
         if (str.length != 2) {
             throw new RuntimeException(monthYear + "must be in format MM/YYYY");
         }
-        return LocalDate.parse(str[1].concat("-"+str[0]).concat("-03"));
+        return LocalDate.parse(str[1].concat("-" + str[0]).concat("-03"));
     }
 }
