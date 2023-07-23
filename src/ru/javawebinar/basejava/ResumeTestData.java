@@ -81,7 +81,13 @@ public class ResumeTestData {
 
     public static void main(String[] args) {
         Resume r = new Resume("Григорий Кислин");
+        System.out.println(getRandomNum());
+        System.out.println(getRandomString(100));
+        System.out.println(getRandomTime());
 
+        if (true) {
+            return;
+        }
         r.addInfoAtSection(SectionType.PERSONAL, "Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
         r.addInfoAtSection(SectionType.OBJECTIVE, "Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.");
 
