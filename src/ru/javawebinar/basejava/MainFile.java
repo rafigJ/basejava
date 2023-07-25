@@ -8,7 +8,7 @@ import java.util.Queue;
 
 public class MainFile {
     public static void main(String[] args) throws IOException {
-        String pathname = ".";
+        String pathname = "./src";
         File file = new File(pathname);
         System.out.println(file.getCanonicalPath());
 //        File dir = new File("./src/ru/javawebinar/basejava");
@@ -21,7 +21,6 @@ public class MainFile {
 //        } catch (IOException e) {
 //            throw new RuntimeException(e);
 //        }
-
         Queue<File> queue = new LinkedList<>();
         queue.add(file);
         while (!queue.isEmpty()) {
@@ -33,6 +32,22 @@ public class MainFile {
                 }
             }
         }
+        System.out.println("====================================================================================");
+        System.out.println("====================================================================================");
+        getDirectoryFile(file);
+    }
 
+    //todo сделать с отступами
+    private static void getDirectoryFile(File file){
+        File[] files = file.listFiles();
+        assert files != null;
+        for (File f : files) {
+            if (f.isDirectory()){
+                getDirectoryFile(f);
+            }
+            else {
+                System.out.println(f.getName());
+            }
+        }
     }
 }

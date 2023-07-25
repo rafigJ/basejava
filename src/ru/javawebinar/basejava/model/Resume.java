@@ -31,19 +31,19 @@ public class Resume {
         return fullName;
     }
 
-    public void addContactInfo(ContactType type, String text){
+    public void addContactInfo(ContactType type, String text) {
         contactMap.put(type, text);
     }
 
-    public void addInfoAtSection(SectionType type, String text){
-        if (isCompanySectionType(type)){
+    public void addInfoAtSection(SectionType type, String text) {
+        if (isCompanySectionType(type)) {
             throw new RuntimeException(String.format("%s is Company section type but expected Text/List-Section type", type));
         }
         if (!sectionMap.containsKey(type)) {
             addSection(type);
         }
 
-        switch (type){
+        switch (type) {
             case PERSONAL:
             case OBJECTIVE:
                 TextSection textSection = (TextSection) sectionMap.get(type);
@@ -57,8 +57,25 @@ public class Resume {
         }
     }
 
-    public void addInfoAtSection(SectionType type, Company company){
-        if(!isCompanySectionType(type)){
+    public void addInfoAtSection(SectionType type, String... texts) {
+        if (isCompanySectionType(type)) {
+            throw new RuntimeException(String.format("%s is Company section type but expected ListSection type", type));
+        }
+        if (!sectionMap.containsKey(type)) {
+            addSection(type);
+        }
+
+        switch (type) {
+            case ACHIEVEMENT:
+            case QUALIFICATIONS:
+                ListSection listSection = (ListSection) sectionMap.get(type);
+                listSection.getList().addAll(Arrays.asList(texts));
+                break;
+        }
+    }
+
+    public void addInfoAtSection(SectionType type, Company company) {
+        if (!isCompanySectionType(type)) {
             throw new RuntimeException(String.format("%s is NOT Company section type ", type));
         }
         if (!sectionMap.containsKey(type)) {
@@ -68,11 +85,11 @@ public class Resume {
         companySection.getCompanies().add(company);
     }
 
-    private boolean isCompanySectionType(SectionType type){
+    private boolean isCompanySectionType(SectionType type) {
         return type == SectionType.EXPERIENCE || type == SectionType.EDUCATION;
     }
 
-    private void addSection(SectionType type){
+    private void addSection(SectionType type) {
         switch (type) {
             case PERSONAL:
             case OBJECTIVE:
@@ -89,11 +106,11 @@ public class Resume {
         }
     }
 
-    public Section getSection(SectionType type){
+    public Section getSection(SectionType type) {
         return sectionMap.get(type);
     }
 
-    public String getContactInfo(ContactType type){
+    public String getContactInfo(ContactType type) {
         return contactMap.get(type);
     }
 
