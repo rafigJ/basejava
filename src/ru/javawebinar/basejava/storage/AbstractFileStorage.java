@@ -40,7 +40,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public int size() {
-        File[] files = directory.listFiles();
+        String[] files = directory.list();
         if (files == null) {
             throw new StorageException("ERROR: this not a directory or IO exception");
         }
@@ -80,7 +80,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected Resume getResume(File file) {
         try {
             return doRead(file);
-        } catch (IOException e){
+        } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }
     }

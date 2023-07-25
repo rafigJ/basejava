@@ -58,20 +58,14 @@ public class Resume {
     }
 
     public void addInfoAtSection(SectionType type, String... texts) {
-        if (isCompanySectionType(type)) {
-            throw new RuntimeException(String.format("%s is Company section type but expected ListSection type", type));
+        if (isCompanySectionType(type) || isTextSectionType(type)) {
+            throw new RuntimeException(String.format("%s is Company/Text section type but expected ListSection type", type));
         }
         if (!sectionMap.containsKey(type)) {
             addSection(type);
         }
-
-        switch (type) {
-            case ACHIEVEMENT:
-            case QUALIFICATIONS:
-                ListSection listSection = (ListSection) sectionMap.get(type);
-                listSection.getList().addAll(Arrays.asList(texts));
-                break;
-        }
+        ListSection listSection = (ListSection) sectionMap.get(type);
+        listSection.getList().addAll(Arrays.asList(texts));
     }
 
     public void addInfoAtSection(SectionType type, Company company) {
@@ -85,8 +79,23 @@ public class Resume {
         companySection.getCompanies().add(company);
     }
 
+    public void addInfoAtSection(SectionType type, Company... company) {
+        if (!isCompanySectionType(type)) {
+            throw new RuntimeException(String.format("%s is NOT Company section type ", type));
+        }
+        if (!sectionMap.containsKey(type)) {
+            addSection(type);
+        }
+        CompanySection companySection = (CompanySection) sectionMap.get(type);
+        companySection.getCompanies().addAll(Arrays.asList(company));
+    }
+
     private boolean isCompanySectionType(SectionType type) {
         return type == SectionType.EXPERIENCE || type == SectionType.EDUCATION;
+    }
+
+    private boolean isTextSectionType(SectionType type) {
+        return type == SectionType.PERSONAL || type == SectionType.OBJECTIVE;
     }
 
     private void addSection(SectionType type) {
