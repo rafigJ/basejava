@@ -34,19 +34,24 @@ public class MainFile {
         }
         System.out.println("====================================================================================");
         System.out.println("====================================================================================");
-        getDirectoryFile(file);
+        getDirectoryFile(file, 0);
     }
 
     //todo сделать с отступами
-    private static void getDirectoryFile(File file){
+    private static void getDirectoryFile(File file, int i){
         File[] files = file.listFiles();
+        StringBuilder space = new StringBuilder();
+        for (int j = 0; j < i; j++) {
+            space.append("    ");
+        }
         assert files != null;
         for (File f : files) {
             if (f.isDirectory()){
-                getDirectoryFile(f);
+                System.out.println(space + f.getName());
+                getDirectoryFile(f, i + 1);
             }
             else {
-                System.out.println(f.getName());
+                System.out.println(space + f.getName());
             }
         }
     }
