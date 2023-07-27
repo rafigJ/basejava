@@ -51,49 +51,50 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
         }
     }
 
-    @Override
-    protected void replaceResume(Resume r, Path path) {
-        try {
-            doWrite(r, new BufferedOutputStream(new FileOutputStream(path.toFile())));
-        } catch (IOException e) {
-            throw new StorageException("Path write error", r.getUuid(), e);
-        }
-    }
 
-    @Override
-    protected void saveResume(Resume r, Path path) {
-        try {
-            path.toFile().createNewFile();
-            doWrite(r, new BufferedOutputStream(new FileOutputStream(path.toFile())));
-        } catch (IOException e) {
-            throw new StorageException("IO error", path.getFileName().toString(), e);
-        }
-    }
+    //    @Override
+//    protected void replaceResume(Resume r, Path path) {
+//        try {
+//            doWrite(r, ); TODO
+//        } catch (IOException e) {
+//            throw new StorageException("Path write error", r.getUuid(), e);
+//        }
+//    }
 
-    @Override
-    protected Resume getResume(Path path) {
-        try {
-            return doRead(new BufferedInputStream(new FileInputStream(path))); // todo
-        } catch (IOException e) {
-            throw new StorageException("IO error", path.getName(), e);
-        }
-    }
+//    @Override
+//    protected void saveResume(Resume r, Path path) {
+//        try {
+//            path.toFile().createNewFile();
+//            doWrite(r, new BufferedOutputStream(new FileOutputStream(path.toFile()))); TODO
+//        } catch (IOException e) {
+//            throw new StorageException("IO error", path.getFileName().toString(), e);
+//        }
+//    }
 
-    @Override
-    protected Path getSearchKey(String uuid) {
-        return new Path(directory, uuid); // todo
-    }
+//    @Override
+//    protected Resume getResume(Path path) {
+//        try {
+//            return doRead(new BufferedInputStream(new FileInputStream(path))); // TODO
+//        } catch (IOException e) {
+//            throw new StorageException("IO error", path.getName(), e);
+//        }
+//    }
 
-    @Override
-    protected void deleteResume(Path path) {
-        if (!path.delete()) { // todo
-            throw new StorageException("can't delete this path ", path.getName());
-        }
-    }
+//    @Override
+//    protected Path getSearchKey(String uuid) {
+//        return new Path(directory, uuid); // TODO
+//    }
+
+//    @Override
+//    protected void deleteResume(Path path) {
+//        if (!path.delete()) { // TODO
+//            throw new StorageException("can't delete this path ", path.getName());
+//        }
+//    }
 
     @Override
     protected boolean isExist(Path path) {
-        return path.isAbsolute(); //todo
+        return path.isAbsolute(); //TODO
     }
 
     protected abstract void doWrite(Resume r, OutputStream os) throws IOException;
