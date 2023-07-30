@@ -5,9 +5,10 @@ import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.storage.serialization.SerializationType;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class FileStorage extends AbstractStorage<File> {
     private final File directory;
@@ -32,13 +33,8 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        File[] files = getFileList();
-        for (File f : files) {
-            try {
-                deleteResume(f);
-            } catch (Exception e) {
-                throw new RuntimeException("Can't delete file", e);
-            }
+        for (File f : getFileList()) {
+            deleteResume(f);
         }
     }
 
@@ -49,12 +45,9 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     protected List<Resume> doCopyAll() {
-        List<Resume> resumes = new ArrayList<>();
-        File[] fileList = getFileList();
-        for (File f : fileList) {
-            resumes.add(getResume(f));
-        }
-        return resumes;
+        return Arrays.stream(getFileList())
+                .map(this::getResume)
+                .collect(Collectors.toList());
     }
 
     private File[] getFileList(){
@@ -78,10 +71,10 @@ public class FileStorage extends AbstractStorage<File> {
     protected void saveResume(Resume r, File file) {
         try {
             file.createNewFile();
-            serialization.writeResume(r, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }
+        replaceResume(r, file);
     }
 
     @Override
