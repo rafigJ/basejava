@@ -60,10 +60,9 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             return Files.list(directory);
         } catch (IOException e) {
-            throw new StorageException("ERROR: this not a directory or IO exception");
+            throw new StorageException("ERROR: this not a directory or IO exception", e);
         }
     }
-
 
     @Override
     protected void replaceResume(Resume r, Path path) {
@@ -79,7 +78,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             Files.createFile(path);
         } catch (IOException e) {
-            throw new StorageException("IO error", path.getFileName().toString(), e);
+            throw new StorageException("IO error", getFileName(path), e);
         }
         replaceResume(r, path);
     }
@@ -89,7 +88,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             return serialization.readResume(new BufferedInputStream(Files.newInputStream(path)));
         } catch (IOException e) {
-            throw new StorageException("IO error", path.getFileName().toString(), e);
+            throw new StorageException("IO error", getFileName(path), e);
         }
     }
 
@@ -103,7 +102,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             Files.delete(path);
         } catch (IOException e) {
-            throw new StorageException("can't delete this path file", path.getFileName().toString());
+            throw new StorageException("can't delete this path file", path.getFileName().toString(), e);
         }
     }
 
@@ -112,4 +111,7 @@ public class PathStorage extends AbstractStorage<Path> {
         return Files.exists(path);
     }
 
+    private String getFileName(Path path) {
+        return path.getFileName().toString();
+    }
 }
