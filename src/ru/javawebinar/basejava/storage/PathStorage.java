@@ -35,25 +35,17 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     public void clear() {
-        Stream<Path> pathStream = getPathStream();
-        pathStream.forEach(this::deleteResume);
-        pathStream.close();
+        getPathStream().forEach(this::deleteResume);
     }
 
     @Override
     public int size() {
-        Stream<Path> pathStream = getPathStream();
-        int count = (int) pathStream.count();
-        pathStream.close();
-        return count;
+        return (int) getPathStream().count();
     }
 
     @Override
     protected List<Resume> doCopyAll() {
-        Stream<Path> pathStream = getPathStream();
-        List<Resume> list = pathStream.map(this::getResume).collect(Collectors.toList());
-        pathStream.close();
-        return list;
+        return getPathStream().map(this::getResume).collect(Collectors.toList());
     }
 
     private Stream<Path> getPathStream() {
@@ -102,7 +94,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             Files.delete(path);
         } catch (IOException e) {
-            throw new StorageException("can't delete this path file", path.getFileName().toString(), e);
+            throw new StorageException("can't delete this path file", getFileName(path), e);
         }
     }
 
