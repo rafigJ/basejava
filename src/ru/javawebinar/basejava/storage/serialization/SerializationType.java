@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public interface SerializationType {
-    void writeResume(Resume resume, OutputStream os) throws IOException;
+    void write(Resume resume, OutputStream os) throws IOException;
 
-    Resume readResume(InputStream is) throws IOException;
+    Resume read(InputStream is) throws IOException;
 }

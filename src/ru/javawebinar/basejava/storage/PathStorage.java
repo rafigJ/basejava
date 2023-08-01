@@ -59,7 +59,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected void replaceResume(Resume r, Path path) {
         try {
-            serialization.writeResume(r, new BufferedOutputStream(Files.newOutputStream(path)));
+            serialization.write(r, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
             throw new StorageException("Path write error", r.getUuid(), e);
         }
@@ -78,7 +78,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume getResume(Path path) {
         try {
-            return serialization.readResume(new BufferedInputStream(Files.newInputStream(path)));
+            return serialization.read(new BufferedInputStream(Files.newInputStream(path)));
         } catch (IOException e) {
             throw new StorageException("IO error", getFileName(path), e);
         }

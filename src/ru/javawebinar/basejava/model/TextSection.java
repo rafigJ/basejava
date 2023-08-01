@@ -5,6 +5,9 @@ public class TextSection extends Section {
 
     private String text;
 
+    public TextSection() {
+    }
+
     public void setText(String text) {
         this.text = text;
     }

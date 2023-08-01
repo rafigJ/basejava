@@ -8,6 +8,9 @@ public class ListSection extends Section {
 
     private final List<String> list = new ArrayList<>();
 
+    public ListSection() {
+    }
+
     public List<String> getList() {
         return list;
     }

@@ -61,7 +61,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected void replaceResume(Resume r, File file) {
         try {
-            serialization.writeResume(r, new BufferedOutputStream(new FileOutputStream(file)));
+            serialization.write(r, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("File write error", r.getUuid(), e);
         }
@@ -80,7 +80,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected Resume getResume(File file) {
         try {
-            return serialization.readResume(new BufferedInputStream(new FileInputStream(file)));
+            return serialization.read(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }

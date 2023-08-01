@@ -6,6 +6,6 @@ import org.junit.platform.suite.api.Suite;
 @Suite
 @SelectClasses({ArrayStorageTest.class, SortedArrayStorageTest.class, ListStorageTest.class,
         MapUuidStorageTest.class, MapResumeStorageTest.class, ObjectStreamStorageTest.class,
-        ObjectStreamPathStorageTest.class})
+        ObjectStreamPathStorageTest.class, XmlPathStorageTest.class})
 public class AllTestRunner {
 }
