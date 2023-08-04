@@ -1,11 +1,14 @@
 package ru.javawebinar.basejava.storage.serialization;
 
 import ru.javawebinar.basejava.model.*;
+import ru.javawebinar.basejava.util.customfunction.CustomConsumer;
 
 import java.io.*;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class DataStreamSerialization implements SerializationType {
 
@@ -16,14 +19,16 @@ public class DataStreamSerialization implements SerializationType {
             dos.writeUTF(r.getFullName());
             Map<ContactType, String> contacts = r.getContactMap();
             dos.writeInt(contacts.size());
-            for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
-                dos.writeUTF(entry.getKey().name());
-                dos.writeUTF(entry.getValue());
-            }
+
+            writeWithException(contacts.entrySet(), entry -> {
+                    dos.writeUTF(entry.getKey().name());
+                    dos.writeUTF(entry.getValue());
+            });
 
             Map<SectionType, Section> sections = r.getSectionMap();
             dos.writeInt(sections.size());
-            for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
+
+            writeWithException(sections.entrySet(), entry -> {
                 dos.writeUTF(entry.getKey().name());
                 switch (entry.getKey()) {
                     case PERSONAL:
@@ -43,7 +48,7 @@ public class DataStreamSerialization implements SerializationType {
                         writeCompanySection((CompanySection) entry.getValue(), dos);
                         break;
                 }
-            }
+            });
         }
     }
 
@@ -86,9 +91,8 @@ public class DataStreamSerialization implements SerializationType {
 
     private static void writeCompanySection(CompanySection companySection, DataOutputStream dos) throws IOException {
         List<Company> companies = companySection.getCompanies();
-        List<Company.Period> periods;
         dos.writeInt(companies.size());
-        for (Company c : companies) {
+        writeWithException(companies, c -> {
             dos.writeUTF(c.getCompanyName());
             String website = c.getWebsite();
             if (website != null) {
@@ -97,7 +101,8 @@ public class DataStreamSerialization implements SerializationType {
             } else {
                 dos.writeBoolean(false);
             }
-            periods = c.getPeriods();
+
+            List<Company.Period> periods = c.getPeriods();
             dos.writeInt(periods.size());
             for (Company.Period p : periods) {
                 dos.writeUTF(p.getStartDate().toString());
@@ -105,7 +110,7 @@ public class DataStreamSerialization implements SerializationType {
                 dos.writeUTF(p.getTitle());
                 dos.writeUTF(p.getDescription());
             }
-        }
+        });
     }
 
     private static Company[] readCompanySection(DataInputStream dis) throws IOException {
@@ -129,5 +134,13 @@ public class DataStreamSerialization implements SerializationType {
             }
         }
         return companies;
+    }
+
+    private static <T> void writeWithException(Collection<T> collection, CustomConsumer<? super T> action) throws IOException {
+        Objects.requireNonNull(collection);
+        Objects.requireNonNull(action);
+        for (T t : collection) {
+            action.accept(t);
+        }
     }
 }
