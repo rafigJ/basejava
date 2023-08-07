@@ -18,17 +18,14 @@ public class DataStreamSerialization implements SerializationType {
             dos.writeUTF(r.getUuid());
             dos.writeUTF(r.getFullName());
             Map<ContactType, String> contacts = r.getContactMap();
-            dos.writeInt(contacts.size());
 
-            writeWithException(contacts.entrySet(), entry -> {
-                    dos.writeUTF(entry.getKey().name());
-                    dos.writeUTF(entry.getValue());
+            writeWithException(contacts.entrySet(), dos, entry -> {
+                dos.writeUTF(entry.getKey().name());
+                dos.writeUTF(entry.getValue());
             });
 
             Map<SectionType, Section> sections = r.getSectionMap();
-            dos.writeInt(sections.size());
-
-            writeWithException(sections.entrySet(), entry -> {
+            writeWithException(sections.entrySet(), dos, entry -> {
                 dos.writeUTF(entry.getKey().name());
                 switch (entry.getKey()) {
                     case PERSONAL:
@@ -38,10 +35,7 @@ public class DataStreamSerialization implements SerializationType {
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
                         List<String> list = ((ListSection) entry.getValue()).getList();
-                        dos.writeInt(list.size());
-                        for (String str : list) {
-                            dos.writeUTF(str);
-                        }
+                        writeWithException(list, dos, dos::writeUTF);
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
@@ -91,8 +85,7 @@ public class DataStreamSerialization implements SerializationType {
 
     private static void writeCompanySection(CompanySection companySection, DataOutputStream dos) throws IOException {
         List<Company> companies = companySection.getCompanies();
-        dos.writeInt(companies.size());
-        writeWithException(companies, c -> {
+        writeWithException(companies, dos, c -> {
             dos.writeUTF(c.getCompanyName());
             String website = c.getWebsite();
             if (website != null) {
@@ -103,13 +96,12 @@ public class DataStreamSerialization implements SerializationType {
             }
 
             List<Company.Period> periods = c.getPeriods();
-            dos.writeInt(periods.size());
-            for (Company.Period p : periods) {
+            writeWithException(periods, dos, p -> {
                 dos.writeUTF(p.getStartDate().toString());
                 dos.writeUTF(p.getEndDate().toString());
                 dos.writeUTF(p.getTitle());
                 dos.writeUTF(p.getDescription());
-            }
+            });
         });
     }
 
@@ -136,9 +128,11 @@ public class DataStreamSerialization implements SerializationType {
         return companies;
     }
 
-    private static <T> void writeWithException(Collection<T> collection, CustomConsumer<? super T> action) throws IOException {
+    private static <T> void writeWithException(Collection<T> collection, DataOutputStream dos, CustomConsumer<? super T> action) throws IOException {
         Objects.requireNonNull(collection);
         Objects.requireNonNull(action);
+        Objects.requireNonNull(dos);
+        dos.writeInt(collection.size());
         for (T t : collection) {
             action.accept(t);
         }
