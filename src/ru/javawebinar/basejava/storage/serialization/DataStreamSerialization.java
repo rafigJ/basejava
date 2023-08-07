@@ -2,13 +2,11 @@ package ru.javawebinar.basejava.storage.serialization;
 
 import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.util.customfunction.CustomConsumer;
+import ru.javawebinar.basejava.util.customfunction.CustomRunnable;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class DataStreamSerialization implements SerializationType {
 
@@ -52,13 +50,10 @@ public class DataStreamSerialization implements SerializationType {
             String uuid = dis.readUTF();
             String fullName = dis.readUTF();
             Resume resume = new Resume(uuid, fullName);
-            int size = dis.readInt();
-            for (int i = 0; i < size; i++) {
-                resume.addContactInfo(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-            }
 
-            size = dis.readInt();
-            for (int i = 0; i < size; i++) {
+            readWithException(dis, () -> resume.addContactInfo(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
+
+            readWithException(dis, () -> {
                 SectionType type = SectionType.valueOf(dis.readUTF());
                 switch (type) {
                     case PERSONAL:
@@ -78,7 +73,8 @@ public class DataStreamSerialization implements SerializationType {
                         resume.addInfoAtSection(type, readCompanySection(dis));
                         break;
                 }
-            }
+            });
+
             return resume;
         }
     }
@@ -106,26 +102,25 @@ public class DataStreamSerialization implements SerializationType {
     }
 
     private static Company[] readCompanySection(DataInputStream dis) throws IOException {
-        Company[] companies = new Company[dis.readInt()];
-        for (int i = 0; i < companies.length; i++) {
+        ArrayList<Company> companies = new ArrayList<>();
+        readWithException(dis, () -> {
             String name = dis.readUTF();
             if (dis.readBoolean()) {
-                String website = dis.readUTF();
-                companies[i] = new Company(name, website);
+                companies.add(new Company(name, dis.readUTF()));
             } else {
-                companies[i] = new Company(name);
+                companies.add(new Company(name));
             }
-            List<Company.Period> periods = companies[i].getPeriods();
-            int periodSize = dis.readInt();
-            for (int j = 0; j < periodSize; j++) {
+
+            List<Company.Period> periods = companies.get(companies.size() - 1).getPeriods();
+            readWithException(dis, () -> {
                 LocalDate startDate = LocalDate.parse(dis.readUTF());
                 LocalDate endDate = LocalDate.parse(dis.readUTF());
                 String title = dis.readUTF();
                 String description = dis.readUTF();
                 periods.add(new Company.Period(startDate, endDate, title, description));
-            }
-        }
-        return companies;
+            });
+        });
+        return companies.toArray(new Company[0]);
     }
 
     private static <T> void writeWithException(Collection<T> collection, DataOutputStream dos, CustomConsumer<? super T> action) throws IOException {
@@ -135,6 +130,15 @@ public class DataStreamSerialization implements SerializationType {
         dos.writeInt(collection.size());
         for (T t : collection) {
             action.accept(t);
+        }
+    }
+
+    private static void readWithException(DataInputStream dis, CustomRunnable action) throws IOException {
+        Objects.requireNonNull(action);
+        Objects.requireNonNull(dis);
+        int size = dis.readInt();
+        for (int i = 0; i < size; i++) {
+            action.run();
         }
     }
 }
