@@ -62,11 +62,9 @@ public class DataStreamSerialization implements SerializationType {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        String[] strings = new String[dis.readInt()];
-                        for (int j = 0; j < strings.length; j++) {
-                            strings[j] = dis.readUTF();
-                        }
-                        resume.addInfoAtSection(type, strings);
+                        ArrayList<String> strings = new ArrayList<>();
+                        readWithException(dis, () -> strings.add(dis.readUTF()));
+                        resume.addInfoAtSection(type, strings.toArray(new String[0]));
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
