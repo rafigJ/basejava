@@ -14,7 +14,7 @@ public class MainDeadlockExample {
         }
 
         public synchronized String getName(){
-            return this.getName() + " Class1";
+            return this.toString();
         }
     }
 
@@ -33,7 +33,7 @@ public class MainDeadlockExample {
         }
 
         public synchronized String getName(){
-            return this.getName() + " Class2";
+            return this.toString();
         }
     }
 
