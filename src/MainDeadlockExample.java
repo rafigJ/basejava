@@ -21,7 +21,7 @@ public class MainDeadlockExample {
     public static class Class2 {
         public synchronized Class1 getClass1(Class1 class1) {
             String name = Thread.currentThread().getName();
-            System.out.println(name + " working in getClass2");
+            System.out.println(name + " working in getClass1");
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
