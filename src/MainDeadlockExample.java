@@ -1,5 +1,5 @@
 public class MainDeadlockExample {
-    public static class Class1 {
+    private static class Class1 {
         public synchronized Class2 getClass2(Class2 class2) {
             String name = Thread.currentThread().getName();
             System.out.println(name + " working in getClass2");
@@ -18,7 +18,7 @@ public class MainDeadlockExample {
         }
     }
 
-    public static class Class2 {
+    private static class Class2 {
         public synchronized Class1 getClass1(Class1 class1) {
             String name = Thread.currentThread().getName();
             System.out.println(name + " working in getClass1");
