@@ -1,7 +1,8 @@
 package ru.javawebinar.basejava;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainConcurrency {
     public static final int THREADS_NUMBER = 10000;
@@ -13,25 +14,28 @@ public class MainConcurrency {
 //        System.out.println(Thread.currentThread().getName());
 //
         final MainConcurrency mainConcurrency = new MainConcurrency();
-        List<Thread> threads = new ArrayList<>();
+//        List<Thread> threads = new ArrayList<>();
+        CountDownLatch countDownLatch = new CountDownLatch(THREADS_NUMBER);
         for (int i = 0; i < THREADS_NUMBER; i++) {
-            Thread thread = new Thread(() -> {
-                for (int j = 0; j < 100; j++) {
-                    mainConcurrency.inc();
-                }
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            });
-            thread.start();
-            threads.add(thread);
-            System.out.println("ACTIVE COUNT THREADS: " + Thread.activeCount());
+
+            ExecutorService executorService = Executors.newCachedThreadPool();
+            executorService.submit(
+//            Thread thread = new Thread(
+                    () -> {
+                        for (int j = 0; j < 100; j++) {
+                            mainConcurrency.inc();
+                        }
+                        countDownLatch.countDown();
+                    });
+//            thread.start();
+//            threads.add(thread);
+
         }
-        for (Thread t : threads) {
-            t.join();
-        }
+//        for (Thread t : threads) {
+//            t.join();
+//        }
+        System.out.println(mainConcurrency.counter);
+        countDownLatch.await();
         System.out.println(mainConcurrency.counter);
 
     }
