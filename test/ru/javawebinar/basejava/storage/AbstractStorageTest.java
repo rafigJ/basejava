@@ -28,7 +28,7 @@ public abstract class AbstractStorageTest {
     public static final String FULL_NAME_3 = "Car";
     protected static final Resume RESUME_1 = ResumeTestData.getFullRandomResume(UUID_1, FULL_NAME_1);
     protected static final Resume RESUME_2 = ResumeTestData.getFullRandomResume(UUID_2, FULL_NAME_2);
-    protected static final Resume RESUME_3 = ResumeTestData.getFullRandomResume(UUID_3, FULL_NAME_3);
+    protected static final Resume RESUME_3 = ResumeTestData.getNotFullRandomResume(UUID_3, FULL_NAME_3);
     protected static final Resume RESUME_4 = new Resume(UUID_4);
 
     protected AbstractStorageTest(Storage storage) {

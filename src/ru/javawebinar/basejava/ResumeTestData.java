@@ -13,7 +13,14 @@ public class ResumeTestData {
     public static Resume getFullRandomResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
         addContacts(resume);
-        addSectionData(resume);
+        addSectionData(resume, true);
+        return resume;
+    }
+
+    public static Resume getNotFullRandomResume(String uuid, String fullName) {
+        Resume resume = new Resume(uuid, fullName);
+        addContacts(resume);
+        addSectionData(resume, false);
         return resume;
     }
 
@@ -27,7 +34,7 @@ public class ResumeTestData {
         r.addContactInfo(ContactType.HOMEPAGE, getRandomString(10));
     }
 
-    private static void addSectionData(Resume r) {
+    private static void addSectionData(Resume r, boolean isFull) {
         r.addInfoAtSection(SectionType.PERSONAL, getRandomString(200));
         r.addInfoAtSection(SectionType.OBJECTIVE, getRandomString(200));
 
@@ -35,18 +42,31 @@ public class ResumeTestData {
             r.addInfoAtSection(SectionType.ACHIEVEMENT, getRandomString(200));
             r.addInfoAtSection(SectionType.QUALIFICATIONS, getRandomString(200));
 
-            Company company = new Company(getRandomString(20));
+            Company company = new Company(
+                    getRandomString(20),
+                    getRandomStringOrNull(isFull)
+            );
+
             LocalDate date = getRandomTime();
-            company.getPeriods().add(new Company.Period(date, date.plusYears(2), getRandomString(16),
-                    getRandomString(100)));
+            company.getPeriods().add(
+                    new Company.Period(date,
+                            date.plusYears(2),
+                            getRandomString(16),
+                            getRandomString(100))
+            );
             r.addInfoAtSection(SectionType.EXPERIENCE, company);
 
             company = new Company(getRandomString(20));
             date = getRandomTime();
+            String description = getRandomStringOrNull(isFull);
             company.getPeriods().add(new Company.Period(date, date.plusYears(2), getRandomString(16),
-                    getRandomString(100)));
+                    description));
             r.addInfoAtSection(SectionType.EDUCATION, company);
         }
+    }
+
+    private static String getRandomStringOrNull(boolean isFull) {
+        return isFull ? getRandomString(100) : null;
     }
 
     private static String getRandomNum() {

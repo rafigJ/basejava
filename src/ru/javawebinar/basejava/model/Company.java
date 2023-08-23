@@ -25,14 +25,13 @@ public class Company implements Serializable {
     }
 
     public Company(String companyName) {
-        this.companyName = companyName;
-        this.website = null;
+        this(companyName, null);
     }
 
     public Company(String companyName, String url) {
         Objects.requireNonNull(companyName, "companyName must be not null");
         this.companyName = companyName;
-        this.website = url;
+        this.website = url == null ? "" : url;
     }
 
     public String getCompanyName() {
@@ -100,7 +99,7 @@ public class Company implements Serializable {
             this.startDate = startDate;
             this.endDate = endDate;
             this.title = title;
-            this.description = description;
+            this.description = description == null ? "" : description;
         }
 
         public LocalDate getStartDate() {

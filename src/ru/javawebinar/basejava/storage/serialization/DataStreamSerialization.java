@@ -80,12 +80,7 @@ public class DataStreamSerialization implements SerializationType {
         writeWithException(companies, dos, c -> {
             dos.writeUTF(c.getCompanyName());
             String website = c.getWebsite();
-            if (website != null) {
-                dos.writeBoolean(true);
-                dos.writeUTF(website);
-            } else {
-                dos.writeBoolean(false);
-            }
+            dos.writeUTF(website);
 
             List<Company.Period> periods = c.getPeriods();
             writeWithException(periods, dos, p -> {
@@ -101,11 +96,8 @@ public class DataStreamSerialization implements SerializationType {
         ArrayList<Company> companies = new ArrayList<>();
         readWithException(dis, () -> {
             String name = dis.readUTF();
-            if (dis.readBoolean()) {
-                companies.add(new Company(name, dis.readUTF()));
-            } else {
-                companies.add(new Company(name));
-            }
+
+            companies.add(new Company(name, dis.readUTF()));
 
             List<Company.Period> periods = companies.get(companies.size() - 1).getPeriods();
             readWithException(dis, () -> {
