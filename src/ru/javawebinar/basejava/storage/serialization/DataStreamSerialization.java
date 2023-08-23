@@ -1,8 +1,6 @@
 package ru.javawebinar.basejava.storage.serialization;
 
 import ru.javawebinar.basejava.model.*;
-import ru.javawebinar.basejava.util.customfunction.CustomConsumer;
-import ru.javawebinar.basejava.util.customfunction.CustomRunnable;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -138,5 +136,15 @@ public class DataStreamSerialization implements SerializationType {
         for (int i = 0; i < size; i++) {
             action.run();
         }
+    }
+
+    @FunctionalInterface
+    private interface CustomConsumer<T> {
+        void accept(T a) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface CustomRunnable {
+        void run() throws IOException;
     }
 }
