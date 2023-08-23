@@ -18,7 +18,6 @@ public class MainStream {
         System.out.println("sum list = " + list.stream().reduce(0, Integer::sum));
 
         System.out.println("\n");
-
         List<Integer> list1 = Arrays.asList(4, 5, 6, 7, 1);
         System.out.println("list1 = " + list1);
         System.out.println("oddOrEven(list1) = " + oddOrEven(list1));
@@ -40,11 +39,10 @@ public class MainStream {
     }
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
-        boolean isOdd = integers.stream().reduce(0, Integer::sum) % 2 == 0;
+        boolean isEven = integers.stream().reduce(0, Integer::sum) % 2 == 0;
         return integers.stream()
-                .filter(a -> (isOdd && a % 2 != 0) || (!isOdd && a % 2 == 0))
+                .filter(a -> (isEven && a % 2 != 0) || (!isEven && a % 2 == 0))
                 .collect(Collectors.toList());
     }
-
 
 }
