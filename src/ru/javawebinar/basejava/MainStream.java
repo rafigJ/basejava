@@ -34,8 +34,7 @@ public class MainStream {
         return Arrays.stream(values)
                 .distinct()
                 .sorted()
-                .map(a -> (int) (a * Math.pow(10, atomicInteger.decrementAndGet())))
-                .sum();
+                .reduce(0, (a, b) -> a + (int) (b * Math.pow(10, atomicInteger.decrementAndGet())));
     }
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
