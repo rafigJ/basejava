@@ -2,7 +2,6 @@ package ru.javawebinar.basejava;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class MainStream {
@@ -30,11 +29,10 @@ public class MainStream {
 //                .sorted()
 //                .mapToObj(String::valueOf)
 //                .collect(Collectors.joining()));
-        AtomicInteger atomicInteger = new AtomicInteger((int) Arrays.stream(values).distinct().count());
         return Arrays.stream(values)
                 .distinct()
                 .sorted()
-                .reduce(0, (a, b) -> a + (int) (b * Math.pow(10, atomicInteger.decrementAndGet())));
+                .reduce(0, (a, b) -> 10 * a + b);
     }
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
