@@ -10,9 +10,11 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class SqlStorage implements Storage {
     private final SqlHelper sqlHelper;
+    private static final Logger LOG = Logger.getLogger(SqlStorage.class.getName());
 
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
         ConnectionFactory connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
@@ -25,21 +27,16 @@ public class SqlStorage implements Storage {
             ps.execute();
             return null;
         });
-//        try (Connection connection = connectionFactory.getConnection();
-//             PreparedStatement ps = connection.prepareStatement("TRUNCATE resume")) {
-//            ps.execute();
-//        } catch (SQLException e) {
-//            throw new StorageException(e);
-//        }
     }
 
     @Override
     public void update(Resume r) {
+        LOG.info("update " + r);
         sqlHelper.doSql("UPDATE resume SET full_name=? WHERE uuid=?", ps -> {
             ps.setString(1, r.getFullName());
             ps.setString(2, r.getUuid());
-            int i = ps.executeUpdate();
-            if (i == 0) {
+            if (ps.executeUpdate() == 0) {
+                LOG.warning("ERROR: a resume with a similar uuid is not present in the storage; uuid: " + r.getUuid());
                 throw new NotExistStorageException(r.getUuid());
             }
             return null;
@@ -48,54 +45,38 @@ public class SqlStorage implements Storage {
 
     @Override
     public void save(Resume r) {
+        LOG.info("save " + r);
         sqlHelper.doSql("INSERT INTO resume VALUES (?, ?)", ps -> {
             ps.setString(1, r.getUuid());
             ps.setString(2, r.getFullName());
-            int i = ps.executeUpdate();
-            if (i == 0) {
+
+            if (ps.executeUpdate() == 0) {
                 throw new ExistStorageException(r.getUuid());
             }
             return null;
         });
-//        try (Connection connection = connectionFactory.getConnection();
-//             PreparedStatement ps = connection.prepareStatement("INSERT INTO resume VALUES (?, ?)")) {
-//            ps.setString(1, r.getUuid());
-//            ps.setString(2, r.getFullName());
-//            ps.execute();
-//        } catch (SQLException e) {
-//            throw new StorageException(e);
-//        }
     }
 
     @Override
     public Resume get(String uuid) {
+        LOG.info("get " + uuid);
         return sqlHelper.doSql("SELECT * FROM resume r WHERE r.uuid=?", ps -> {
             ps.setString(1, uuid);
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
+                LOG.warning("ERROR: a resume with a similar uuid is not present in the storage; uuid: " + uuid);
                 throw new NotExistStorageException(uuid);
             }
             return new Resume(uuid, rs.getString("full_name"));
         });
-//        try (Connection connection = connectionFactory.getConnection();
-//             PreparedStatement ps = connection.prepareStatement("SELECT * FROM resume r WHERE r.uuid=?")) {
-//            ps.setString(1, uuid);
-//            ResultSet rs = ps.executeQuery();
-//            if (!rs.next()) {
-//                throw new NotExistStorageException(uuid);
-//            }
-//            return new Resume(uuid, rs.getString("full_name"));
-//        } catch (SQLException e) {
-//            throw new StorageException(e);
-//        }
     }
 
     @Override
     public void delete(String uuid) {
+        LOG.info("delete " + uuid);
         sqlHelper.doSql("DELETE FROM resume r WHERE r.uuid=?", ps -> {
             ps.setString(1, uuid);
-            int i = ps.executeUpdate();
-            if (i == 0) {
+            if (ps.executeUpdate() == 0) {
                 throw new NotExistStorageException(uuid);
             }
             return null;

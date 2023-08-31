@@ -3,10 +3,10 @@ package ru.javawebinar.basejava.storage;
 import org.junit.jupiter.api.Test;
 import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
-import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 class SqlStorageTest extends AbstractStorageTest {
     protected SqlStorageTest(){
@@ -22,10 +22,5 @@ class SqlStorageTest extends AbstractStorageTest {
         storage.update(r2);
         r = storage.get(UUID_1);
         assertEquals(r, r2);
-    }
-
-    @Test
-    public void saveExist() throws StorageException {
-        assertThrows(StorageException.class, () -> storage.save(RESUME_1));
     }
 }
