@@ -19,7 +19,7 @@ public class SqlHelper {
              PreparedStatement preparedStatement = c.prepareStatement(sql)) {
             return activity.action(preparedStatement);
         } catch (SQLException e) {
-            if (e.getErrorCode() == 0) throw new ExistStorageException(sql);
+            if (e.getErrorCode() == 0) throw new ExistStorageException(null);
             throw new StorageException(e);
         }
     }
