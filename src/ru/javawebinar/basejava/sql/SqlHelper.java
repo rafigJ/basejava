@@ -19,14 +19,39 @@ public class SqlHelper {
              PreparedStatement preparedStatement = c.prepareStatement(sql)) {
             return activity.action(preparedStatement);
         } catch (SQLException e) {
-            if (e.getErrorCode() == 0) throw new ExistStorageException(null);
+            throw convertException(e);
+        }
+    }
+
+    public <T> T transactionalExecute(SqlTransaction<T> executor) {
+        try (Connection conn = connectionFactory.getConnection()) {
+            try {
+                conn.setAutoCommit(false);
+                T res = executor.execute(conn);
+                conn.commit();
+                return res;
+            } catch (SQLException e) {
+                conn.rollback();
+                throw convertException(e);
+            }
+        } catch (SQLException e) {
             throw new StorageException(e);
         }
+    }
+
+    private static StorageException convertException(SQLException e) {
+        if (e.getSQLState().equals("23505")) throw new ExistStorageException(null);
+        return new StorageException(e);
     }
 
     @FunctionalInterface
     public interface SqlActivity<T> {
         T action(PreparedStatement ps) throws SQLException;
+    }
+
+    @FunctionalInterface
+    public interface SqlTransaction<T> {
+        T execute(Connection connection) throws SQLException;
     }
 
 }

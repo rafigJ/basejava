@@ -1,7 +1,7 @@
 -- auto-generated definition
 CREATE TABLE public.resume
 (
-    uuid      CHAR(36) NOT NULL
+    uuid      char(36) NOT NULL
         PRIMARY KEY,
     full_name TEXT     NOT NULL
 );
