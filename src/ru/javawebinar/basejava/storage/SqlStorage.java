@@ -102,7 +102,6 @@ public class SqlStorage implements Storage {
                 "LEFT JOIN contact c " +
                 "ON r.uuid = c.resume_uuid " +
                 "ORDER BY full_name", ps -> {
-
             ResultSet res = ps.executeQuery();
             LinkedHashMap<String, Resume> resumeMap = new LinkedHashMap<>();
             while (res.next()) {
