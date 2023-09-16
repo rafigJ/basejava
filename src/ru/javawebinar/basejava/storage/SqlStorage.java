@@ -98,12 +98,13 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        return sqlHelper.doSql("SELECT * FROM resume r " +
+        return sqlHelper.doSql("" +
+                "SELECT * FROM resume r " +
                 "LEFT JOIN contact c " +
                 "ON r.uuid = c.resume_uuid " +
                 "ORDER BY full_name", ps -> {
             ResultSet res = ps.executeQuery();
-            LinkedHashMap<String, Resume> resumeMap = new LinkedHashMap<>();
+            Map<String, Resume> resumeMap = new LinkedHashMap<>();
             while (res.next()) {
                 String uuid = res.getString("uuid");
                 if (!resumeMap.containsKey(uuid)) {
