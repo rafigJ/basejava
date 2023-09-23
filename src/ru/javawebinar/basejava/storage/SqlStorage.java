@@ -14,6 +14,11 @@ public class SqlStorage implements Storage {
     private static final Logger LOG = Logger.getLogger(SqlStorage.class.getName());
 
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         ConnectionFactory connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
         sqlHelper = new SqlHelper(connectionFactory);
     }
@@ -206,7 +211,7 @@ public class SqlStorage implements Storage {
                 StringBuilder s = new StringBuilder();
                 while (iterator.hasNext()) {
                     String next = iterator.next();
-                    if (iterator.hasNext()) {
+                if (iterator.hasNext()) {
                         s.append(next).append("/;/");
                     } else {
                         s.append(next);
