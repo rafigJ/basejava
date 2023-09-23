@@ -212,7 +212,7 @@ public class SqlStorage implements Storage {
                 while (iterator.hasNext()) {
                     String next = iterator.next();
                 if (iterator.hasNext()) {
-                        s.append(next).append("/;/");
+                        s.append(next).append("\n");
                     } else {
                         s.append(next);
                     }
@@ -241,7 +241,7 @@ public class SqlStorage implements Storage {
                 break;
             case ACHIEVEMENT:
             case QUALIFICATIONS:
-                r.addInfoAtSection(sectionType, value.split("/;/"));
+                r.addInfoAtSection(sectionType, value.split("\n"));
                 break;
         }
 
