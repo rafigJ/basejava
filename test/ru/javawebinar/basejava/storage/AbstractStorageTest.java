@@ -33,7 +33,7 @@ public abstract class AbstractStorageTest {
     //    protected static final Resume RESUME_1 = new Resume(UUID_1, FULL_NAME_1);
 //    protected static final Resume RESUME_2 = new Resume(UUID_2, FULL_NAME_2);
 //    protected static final Resume RESUME_3 = new Resume(UUID_3, FULL_NAME_3);
-    protected static final Resume RESUME_4 = new Resume(UUID_4);
+    protected static final Resume RESUME_4 = ResumeTestData.getResume();
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;

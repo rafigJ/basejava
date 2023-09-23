@@ -100,6 +100,20 @@ public class ResumeTestData {
     }
 
     public static void main(String[] args) {
+        Resume r = getResume();
+
+
+        System.out.println(r.getFullName());
+
+        for (ContactType c : ContactType.values()) {
+            System.out.println(c.getTitle() + ':' + r.getContactInfo(c));
+        }
+        for (SectionType s : SectionType.values()) {
+            System.out.println(s.getTitle() + ':' + r.getSection(s));
+        }
+    }
+
+    public static Resume getResume() {
         Resume r = new Resume("Григорий Кислин");
 
         r.addInfoAtSection(SectionType.PERSONAL, "Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
@@ -161,16 +175,7 @@ public class ResumeTestData {
         company.getPeriods().add(new Company.Period(parse("03/2011"), parse("04/2011"),
                 "Курс 'Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.'", null));
         r.addInfoAtSection(SectionType.EDUCATION, company);
-
-
-        System.out.println(r.getFullName());
-
-        for (ContactType c : ContactType.values()) {
-            System.out.println(c.getTitle() + ':' + r.getContactInfo(c));
-        }
-        for (SectionType s : SectionType.values()) {
-            System.out.println(s.getTitle() + ':' + r.getSection(s));
-        }
+        return r;
     }
 
     private static LocalDate parse(String monthYear) {
