@@ -7,10 +7,7 @@ import ru.javawebinar.basejava.sql.ConnectionFactory;
 import ru.javawebinar.basejava.sql.SqlHelper;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class SqlStorage implements Storage {
@@ -98,22 +95,30 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        return sqlHelper.doSql("" +
+        Map<String, Resume> map = sqlHelper.doSql("" +
                 "SELECT * FROM resume r " +
-                "LEFT JOIN contact c " +
-                "ON r.uuid = c.resume_uuid " +
-                "ORDER BY full_name", ps -> {
+                "ORDER BY full_name, uuid", ps -> {
             ResultSet res = ps.executeQuery();
             Map<String, Resume> resumeMap = new LinkedHashMap<>();
             while (res.next()) {
                 String uuid = res.getString("uuid");
-                if (!resumeMap.containsKey(uuid)) {
-                    resumeMap.put(uuid, new Resume(uuid, res.getString("full_name")));
-                }
-                addContact(resumeMap.get(uuid), res);
+                resumeMap.put(uuid, new Resume(uuid, res.getString("full_name")));
             }
-            return new ArrayList<>(resumeMap.values());
+            return resumeMap;
         });
+
+        sqlHelper.doSql("SELECT * FROM contact", ps -> {
+            ResultSet res = ps.executeQuery();
+            while (res.next()) {
+                String uuid = res.getString("resume_uuid");
+                String type = res.getString("type");
+                map.get(uuid).addContactInfo(
+                        ContactType.valueOf(type),
+                        res.getString("value"));
+            }
+            return null;
+        });
+        return new ArrayList<>(map.values());
     }
 
     @Override
