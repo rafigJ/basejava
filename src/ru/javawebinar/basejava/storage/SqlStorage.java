@@ -69,34 +69,35 @@ public class SqlStorage implements Storage {
     @Override
     public Resume get(String uuid) {
         LOG.info("get " + uuid);
-        Resume resume =
-                sqlHelper.doSql(
-                        "SELECT * FROM resume r " +
-                                "LEFT JOIN contact c " +
-                                "ON r.uuid = c.resume_uuid " +
-                                "WHERE r.uuid=?",
-                        ps -> {
-                            ps.setString(1, uuid);
-                            ResultSet rs = ps.executeQuery();
-                            if (!rs.next()) {
-                                LOG.warning("ERROR: a resume with a similar uuid is not present in the storage; uuid: " + uuid);
-                                throw new NotExistStorageException(uuid);
-                            }
-                            Resume r = new Resume(uuid, rs.getString("full_name"));
-                            do {
-                                addContact(r, rs);
-                            } while (rs.next());
-                            return r;
-                        });
+        Resume resume = sqlHelper.doSql("SELECT * FROM resume r WHERE r.uuid=?", ps -> {
+                    ps.setString(1, uuid);
+                    ResultSet rs = ps.executeQuery();
+                    if (!rs.next()) {
+                        LOG.warning("ERROR: a resume with a similar uuid is not present in the storage; uuid: " + uuid);
+                        throw new NotExistStorageException(uuid);
+                    }
+                    Resume r = new Resume(uuid, rs.getString("full_name"));
+                    return r;
+        });
+
+        sqlHelper.doSql("SELECT * FROM contact WHERE resume_uuid=?", ps -> {
+            ps.setString(1, uuid);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                addContact(resume, rs);
+            }
+            return null;
+        });
 
         sqlHelper.doSql("SELECT * FROM section WHERE resume_uuid=?", ps -> {
-            ps.setString(1, resume.getUuid());
+            ps.setString(1, uuid);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 addSection(resume, rs);
             }
             return null;
         });
+
         return resume;
     }
 
@@ -207,18 +208,10 @@ public class SqlStorage implements Storage {
             case ACHIEVEMENT:
             case QUALIFICATIONS:
                 ListSection listSection = (ListSection) section;
-                Iterator<String> iterator = listSection.getList().iterator();
-                StringBuilder s = new StringBuilder();
-                while (iterator.hasNext()) {
-                    String next = iterator.next();
-                if (iterator.hasNext()) {
-                        s.append(next).append("\n");
-                    } else {
-                        s.append(next);
-                    }
-                }
-                return s.toString();
+                List<String> list = listSection.getList();
+                return String.join("\n", list.toArray(list.toArray(new String[0])));
         }
+
         return null;
     }
 

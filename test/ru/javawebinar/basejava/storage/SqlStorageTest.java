@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 class SqlStorageTest extends AbstractStorageTest {
     protected SqlStorageTest(){
-        super(new SqlStorage(Config.get().getDbUrl(), Config.get().getDbUser(), Config.get().getDbPassword()));
+        super(Config.get().getStorage());
     }
 
     @Test
