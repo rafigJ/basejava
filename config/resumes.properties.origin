@@ -1,0 +1,4 @@
+storage.dir=D:/Java/BaseJavaCourse/basejava/storage
+db.url=jdbc:postgresql://localhost:5432/resume_db
+db.user=postgres
+db.password=postgres

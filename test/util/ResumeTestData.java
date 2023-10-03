@@ -1,4 +1,4 @@
-package ru.javawebinar.basejava.storage;
+package util;
 
 import ru.javawebinar.basejava.model.Company;
 import ru.javawebinar.basejava.model.ContactType;
