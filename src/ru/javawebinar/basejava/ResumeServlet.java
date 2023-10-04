@@ -1,5 +1,6 @@
 package ru.javawebinar.basejava;
 
+import ru.javawebinar.basejava.model.ContactType;
 import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.storage.Storage;
 
@@ -47,10 +48,10 @@ public class ResumeServlet extends HttpServlet {
         for (Resume r : allSorted) {
             table.append(String.format("" +
                             "            <tr>\n" +
-                            "                <td>%s</td>\n" +
+                            "                <td><a href=\"resume?uuid=%s\"> %s </a></td>\n" +
                             "                <td>%s</td>\n" +
                             "            </tr>\n",
-                    r.getUuid(), r.getFullName()));
+                        r.getUuid(), r.getFullName(), r.getContactMap().get(ContactType.EMAIL)));
         }
         table.append("        </table>\n");
 
