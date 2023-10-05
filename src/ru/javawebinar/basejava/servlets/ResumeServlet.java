@@ -29,7 +29,7 @@ public class ResumeServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
             return;
         }
-        Resume r = null;
+        Resume r;
         switch (action) {
             case "view":
             case "edit":
