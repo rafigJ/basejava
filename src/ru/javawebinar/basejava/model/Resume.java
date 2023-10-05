@@ -136,7 +136,7 @@ public class Resume implements Serializable {
         return sectionMap.get(type);
     }
 
-    public String getContactInfo(ContactType type) {
+    public String getContact(ContactType type) {
         return contactMap.get(type);
     }
 

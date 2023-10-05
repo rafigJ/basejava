@@ -1,7 +1,5 @@
 package ru.javawebinar.basejava;
 
-import ru.javawebinar.basejava.model.ContactType;
-import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.storage.Storage;
 
 import javax.servlet.ServletConfig;
@@ -10,8 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
     private Storage storage;
@@ -24,40 +20,8 @@ public class ResumeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html; charset=UTF-8");
-        PrintWriter out = response.getWriter();
-
-        List<Resume> allSorted = storage.getAllSorted();
-        StringBuilder table = new StringBuilder();
-        out.println("<html>");
-        out.println("<head>");
-        out.println("<title>All Resumes</title>");
-        out.println("</head>");
-
-        out.println("<body>");
-
-
-        table.append(
-                "<table border=\"2\" cellpadding=\"8\" cellspacing=\"0\">\n" +
-                        "            <tr>\n" +
-                        "                <td>uuid</td>\n" +
-                        "                <td>full_name</td>\n" +
-                        "            </tr>\n");
-        for (Resume r : allSorted) {
-            table.append(String.format("" +
-                            "            <tr>\n" +
-                            "                <td><a href=\"resume?uuid=%s\"> %s </a></td>\n" +
-                            "                <td>%s</td>\n" +
-                            "            </tr>\n",
-                        r.getUuid(), r.getFullName(), r.getContactMap().get(ContactType.EMAIL)));
-        }
-        table.append("        </table>\n");
-
-        out.write(table.toString());
-        out.println("</body>");
-        out.println("</html>");
+        request.setAttribute("resumes", storage.getAllSorted());
+        request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
     }
 
     @Override

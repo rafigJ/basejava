@@ -106,7 +106,7 @@ public class ResumeTestData {
         System.out.println(r.getFullName());
 
         for (ContactType c : ContactType.values()) {
-            System.out.println(c.getTitle() + ':' + r.getContactInfo(c));
+            System.out.println(c.getTitle() + ':' + r.getContact(c));
         }
         for (SectionType s : SectionType.values()) {
             System.out.println(s.getTitle() + ':' + r.getSection(s));
