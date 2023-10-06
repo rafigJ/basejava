@@ -1,5 +1,6 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@ page import="ru.javawebinar.basejava.model.ContactType" language="java" %>
+<%@ page import="ru.javawebinar.basejava.model.SectionType" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 
@@ -27,8 +28,18 @@
                 </dl>
                 </c:forEach>
           </p>
-           <button type="submit">Сохранить</button>
-           <button onclick="window.history.back()">Отменить</button>
+          <h3>Секции:</h3>
+          <p>
+                <c:forEach var="type" items="<%=SectionType.values()%>">
+                <dl>
+                  <dt>${type.title}</dt>
+                  <dd><input type="text" name="${type.name()}" size=30 value="${resume.getContact(type)}"></dd>
+                </dl>
+                </c:forEach>
+          </p>
+          <hr>
+          <button type="submit">Сохранить</button>
+          <button onclick="window.history.back()">Отменить</button>
     </form>
 </section>
 <jsp:include page="fragments/footer.jsp"/>

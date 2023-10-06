@@ -42,6 +42,10 @@ public class Company implements Serializable {
         return website;
     }
 
+    public boolean hasWebsite() {
+        return Objects.equals(this.website, "");
+    }
+
     public List<Period> getPeriods() {
         return periods;
     }

@@ -156,7 +156,7 @@ public class Resume implements Serializable {
         Resume resume = (Resume) o;
         return Objects.equals(uuid, resume.uuid) &&
                 Objects.equals(fullName, resume.fullName) &&
-//                Objects.equals(sectionMap, resume.sectionMap) &&
+                Objects.equals(sectionMap, resume.sectionMap) &&
                 Objects.equals(contactMap, resume.contactMap);
     }
 

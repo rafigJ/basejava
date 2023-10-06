@@ -183,9 +183,6 @@ public class SqlStorage implements Storage {
     private static void insertSectionDB(Resume r, Connection c) throws SQLException {
         try (PreparedStatement ps = c.prepareStatement("INSERT INTO section (resume_uuid, type, content) VALUES (?,?,?)")) {
             for (Map.Entry<SectionType, Section> e : r.getSectionMap().entrySet()) {
-                if (e.getKey() == SectionType.EXPERIENCE || e.getKey() == SectionType.EDUCATION) {
-                    continue;
-                }
                 ps.setString(1, r.getUuid());
                 ps.setString(2, e.getKey().name());
                 ps.setString(3, JsonParser.write(e.getValue(), Section.class));
