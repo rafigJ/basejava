@@ -2,7 +2,7 @@ package ru.javawebinar.basejava.model;
 
 public enum ContactType {
     PHONE_NUMBER("Номер телефона"),
-    EMAIL("email"),
+    EMAIL("Email"),
     LINKEDIN("Linkedin"),
     SKYPE("Skype"),
     GITHUB("GitHub"),
@@ -11,11 +11,12 @@ public enum ContactType {
 
     private final String title;
 
-    ContactType(String title){
+    ContactType(String title) {
         this.title = title;
     }
 
     public String getTitle() {
         return title;
     }
+
 }
