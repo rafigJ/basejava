@@ -1,6 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@ page import="ru.javawebinar.basejava.model.ContactType" language="java" %>
 <%@ page import="ru.javawebinar.basejava.model.SectionType" language="java" %>
+<%@ page import="ru.javawebinar.basejava.util.HtmlMapper" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 
@@ -30,12 +31,17 @@
           </p>
           <h3>Секции:</h3>
           <p>
-                <c:forEach var="type" items="<%=SectionType.values()%>">
-                <dl>
-                  <dt>${type.title}</dt>
-                  <dd><input type="text" name="${type.name()}" size=30 value="${resume.getContact(type)}"></dd>
-                </dl>
-                </c:forEach>
+              <c:forEach var="type" items="<%=SectionType.values()%>">
+                  <c:choose>
+                      <c:when test="${resume.getSection(type) == null}">
+                           ${HtmlMapper.toEmptyHtml(type)}
+                      </c:when>
+                      <c:otherwise>
+                          ${HtmlMapper.toEditableHtml(type, resume.getSection(type))}
+                      </c:otherwise>
+                  </c:choose>
+                          <div style="margin-bottom: 30px"></div>
+              </c:forEach>
           </p>
           <hr>
           <button type="submit">Сохранить</button>

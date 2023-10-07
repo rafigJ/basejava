@@ -8,17 +8,6 @@
     <link rel="stylesheet" href="css/style.css">
     <jsp:useBean id="resume" type="ru.javawebinar.basejava.model.Resume" scope="request"/>
     <title>Резюме ${resume.fullName}</title>
-    <style>
-       table {
-        border-collapse: separate; /* Способ отображения границы */
-        width: 100%; /* Ширина таблицы */
-        border-spacing: 7px 11px; /* Расстояние между ячейками */
-       }
-       td {
-        padding: 5px; /* Поля вокруг текста */
-        border: 1px solid #a52a2a; /* Граница вокруг ячеек */
-       }
-      </style>
 </head>
 
 <body>
