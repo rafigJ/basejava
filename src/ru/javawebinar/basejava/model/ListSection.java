@@ -17,7 +17,7 @@ public class ListSection extends Section {
 
     @Override
     public String toString() {
-        return list.toString();
+        return String.join("\n", list.toArray(new String[0]));
     }
 
     @Override
