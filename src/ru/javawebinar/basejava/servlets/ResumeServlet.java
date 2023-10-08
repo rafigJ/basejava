@@ -94,7 +94,7 @@ public class ResumeServlet extends HttpServlet {
                             String endDate = request.getParameter(st + "_endDate" + i + k).trim();
                             String periodTitle = request.getParameter(st + "_periodTitle" + i + k).trim();
                             String periodDescription = request.getParameter(st + "_periodDescription" + i + k).trim();
-                            if (paramsIsEmpty(startDate, endDate, periodTitle, periodDescription)) {
+                            if (paramsIsEmpty(startDate, endDate, periodTitle)) {
                                 if (periods.size() == 1) {
                                     response.sendError(400, "One period should always be present");
                                     return;
