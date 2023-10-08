@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -54,7 +55,7 @@ public class ResumeServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
@@ -75,28 +76,30 @@ public class ResumeServlet extends HttpServlet {
                 if (sectionMap.containsKey(st)) {
                     CompanySection cs = (CompanySection) sectionMap.get(st);
                     List<Company> companies = cs.getCompanies();
-                    for (int i = 0; i < companies.size(); i++) {
-                        String companyName = request.getParameter("companyName" + i).trim();
-                        String webSite = request.getParameter("webSite" + i).trim();
-
+                    int listSize = companies.size();
+                    for (int i = 0; i < listSize; i++) {
+                        String companyName = request.getParameter(st + "_companyName" + i).trim();
+                        String webSite = request.getParameter(st + "_webSite" + i).trim();
+                        if (paramsIsEmpty(companyName)) {
+                            response.sendError(400, "Сompany should always be");
+                            return;
+                        }
                         Company company = companies.get(i);
                         company.setCompanyName(companyName);
                         company.setWebsite(webSite);
                         List<Company.Period> periods = company.getPeriods();
-
-                        int size = periods.size();
-                        for (int k = 0; k < size; k++) {
-                            String startDate = request.getParameter("startDate" + i + k).trim();
-                            String endDate = request.getParameter("endDate" + i + k).trim();
-                            String periodTitle = request.getParameter("periodTitle" + i + k).trim();
-                            String periodDescription = request.getParameter("periodDescription" + i + k).trim();
+                        List<Integer> toDelete = new ArrayList<>();
+                        for (int k = 0; k < periods.size(); k++) {
+                            String startDate = request.getParameter(st + "_startDate" + i + k).trim();
+                            String endDate = request.getParameter(st + "_endDate" + i + k).trim();
+                            String periodTitle = request.getParameter(st + "_periodTitle" + i + k).trim();
+                            String periodDescription = request.getParameter(st + "_periodDescription" + i + k).trim();
                             if (paramsIsEmpty(startDate, endDate, periodTitle, periodDescription)) {
-                                if (size == 1) {
+                                if (periods.size() == 1) {
                                     response.sendError(400, "One period should always be present");
                                     return;
                                 }
-                                periods.remove(k--);
-                                size--;
+                                toDelete.add(k);
                                 continue;
                             }
                             periods.set(k, new Company.Period(
@@ -106,19 +109,22 @@ public class ResumeServlet extends HttpServlet {
                                     periodDescription)
                             );
                         }
+                        for (int d : toDelete) {
+                            periods.remove(d);
+                        }
                     }
                 } else {
                     CompanySection cs = new CompanySection();
                     List<Company> companies = cs.getCompanies();
                     Company company = new Company();
-                    String companyName = request.getParameter("companyName0").trim();
-                    String webSite = request.getParameter("webSite0").trim();
+                    String companyName = request.getParameter(st + "_companyName0").trim();
+                    String webSite = request.getParameter(st + "_webSite0").trim();
                     company.setCompanyName(companyName);
                     company.setWebsite(webSite);
-                    String startDate = request.getParameter("startDate00").trim();
-                    String endDate = request.getParameter("endDate00").trim();
-                    String periodTitle = request.getParameter("periodTitle00").trim();
-                    String periodDescription = request.getParameter("periodDescription00").trim();
+                    String startDate = request.getParameter(st + "_startDate00").trim();
+                    String endDate = request.getParameter(st + "_endDate00").trim();
+                    String periodTitle = request.getParameter(st + "_periodTitle00").trim();
+                    String periodDescription = request.getParameter(st + "_periodDescription00").trim();
                     if (paramsIsEmpty(startDate, endDate, periodTitle, periodDescription)) {
                         response.sendError(400, "One period should always be present");
                         return;
@@ -141,7 +147,7 @@ public class ResumeServlet extends HttpServlet {
                 List<String> list = ((ListSection) resume.getSection(st)).getList();
                 list.clear();
                 list.addAll(Arrays.asList(value.split("\n")));
-                list.removeIf(String::isEmpty);
+                list.removeIf(e -> e.equals("\r") || e.isEmpty());
             } else {
                 resume.addInfoAtSection(st, value);
             }
@@ -152,7 +158,7 @@ public class ResumeServlet extends HttpServlet {
 
     private static boolean paramsIsEmpty(String... params) {
         for (String param : params) {
-            if (param != null && !param.isEmpty()) {
+            if (param != null && !param.isEmpty() && !param.equals("\r")) {
                 return false;
             }
         }

@@ -67,20 +67,22 @@
 
                               <c:forEach var="company" items="${companySection.companies}">
 
-                                  <input type='text' name='${type}_companyName${i}' size='30' value='${company.companyName}' placeholder='Название Организации'> </br>
-                                  <input type='text' name='${type}_webSite${i}' size='50' value='${company.getWebsite()}' placeholder='Сайт Организации'> </br>
+                                  <input type='text' style="font-size: 20px;"  name='${type}_companyName${i}' size='30' value='${company.companyName}' placeholder='Название Организации'> </br>
+                                  <input type='text' style="font-size: 20px;"  name='${type}_webSite${i}' size='50' value='${company.getWebsite()}' placeholder='Сайт Организации'> </br>
 
                                   <c:set var="k" value="0"/>
+                                  <div style="margin-bottom: 30px;"></div>
                                   <c:forEach var="period" items="${company.getPeriods()}">
                                       <input type='text' name='${type}_startDate${i}${k}' size='10' value='${period.getStartDate()}' placeholder='Дата начала'>
                                       <input type='text' name='${type}_endDate${i}${k}' size='10' value='${period.getEndDate()}' placeholder='Дата конца'></br>
                                       <input type='text' name='${type}_periodTitle${i}${k}' size='100' value='${period.getTitle()}' placeholder='Заголовок'></br>
                                       <textarea name='${type}_periodDescription${i}${k}' rows='5' cols='100' placeholder='Описание'>${period.getDescription()}</textarea></br>
                                       <c:set var="k" value="${k + 1}"/>
+                                      <div style="margin-bottom: 20px;"></div>
                                   </c:forEach>
 
                                   <c:set var="i" value="${i + 1}"/>
-                                  <div style="margin-bottom: 30px;"></div>
+                                  <div style="margin-bottom: 50px;"></div>
                               </c:forEach>
                           </c:if>
                       </c:otherwise>
