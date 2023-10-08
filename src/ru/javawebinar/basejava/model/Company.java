@@ -34,6 +34,15 @@ public class Company implements Serializable {
         this.website = url == null ? "" : url;
     }
 
+    public void setCompanyName(String companyName) {
+        Objects.requireNonNull(companyName, "companyName must be not null");
+        this.companyName = companyName;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website == null ? "" : website;
+    }
+
     public String getCompanyName() {
         return companyName;
     }

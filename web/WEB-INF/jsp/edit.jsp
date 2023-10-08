@@ -56,25 +56,30 @@
                                <dl>
                                    <dt>${type.title}</dt>
                                    <dd>
-                                       <textarea name="${type}" rows="10" cols="100" placeholder="Для маркированного текста используйте enter">${section}</textarea>
+                                       <textarea name="${type}" rows="10" cols="100" placeholder="Для маркированного текста используйте enter">${resume.getSection(type)}</textarea>
                                    </dd>
                                </dl>
                           </c:if>
                           <c:if test="${type == 'EXPERIENCE' || type == 'EDUCATION'}">
+                              <h3>${type.title}</h3></br>
                               <c:set var="companySection" value="${resume.getSection(type)}"/>
+                              <c:set var="i" value="0"/>
+
                               <c:forEach var="company" items="${companySection.companies}">
-                                  <!-- Формы для каждой компании в секции -->
-                                  <input type='text' name='CompanyName' size='30' value='${company.companyName}' placeholder='Название Организации'> </br>
 
-                                  <input type='text' name='WebSite' size='30' value='${company.getWebsite()}' placeholder='Сайт Организации'> </br>
+                                  <input type='text' name='${type}_companyName${i}' size='30' value='${company.companyName}' placeholder='Название Организации'> </br>
+                                  <input type='text' name='${type}_webSite${i}' size='50' value='${company.getWebsite()}' placeholder='Сайт Организации'> </br>
 
+                                  <c:set var="k" value="0"/>
                                   <c:forEach var="period" items="${company.getPeriods()}">
-                                      <!-- Формы для каждого периода в компании -->
-                                      <input type='text' name='startDate' size='10' value='${period.getStartDate()}' placeholder='Дата начала'>
-                                      <input type='text' name='endDate' size='10' value='${period.getEndDate()}' placeholder='Дата конца'></br>
-                                      <input type='text' name='periodTitle' size='30' value='${period.getTitle()}' placeholder='Заголовок'></br>
-                                      <textarea name='periodDescription' rows='5' cols='100' placeholder='Описание'>${period.getDescription()}</textarea></br>
+                                      <input type='text' name='${type}_startDate${i}${k}' size='10' value='${period.getStartDate()}' placeholder='Дата начала'>
+                                      <input type='text' name='${type}_endDate${i}${k}' size='10' value='${period.getEndDate()}' placeholder='Дата конца'></br>
+                                      <input type='text' name='${type}_periodTitle${i}${k}' size='100' value='${period.getTitle()}' placeholder='Заголовок'></br>
+                                      <textarea name='${type}_periodDescription${i}${k}' rows='5' cols='100' placeholder='Описание'>${period.getDescription()}</textarea></br>
+                                      <c:set var="k" value="${k + 1}"/>
                                   </c:forEach>
+
+                                  <c:set var="i" value="${i + 1}"/>
                                   <div style="margin-bottom: 30px;"></div>
                               </c:forEach>
                           </c:if>

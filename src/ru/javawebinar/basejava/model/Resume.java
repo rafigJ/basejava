@@ -73,6 +73,10 @@ public class Resume implements Serializable {
             case ACHIEVEMENT:
             case QUALIFICATIONS:
                 ListSection listSection = (ListSection) sectionMap.get(type);
+                if (text.contains("\n")) {
+                    addInfoAtSection(type, text.split("\n"));
+                    return;
+                }
                 listSection.getList().add(text);
                 break;
         }
