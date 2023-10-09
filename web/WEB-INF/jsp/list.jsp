@@ -12,7 +12,7 @@
 <body>
 <jsp:include page="fragments/header.jsp"/>
 <section>
-    <div style="text-align: center;">
+    <div style="text-align: left;">
         <a href="resume?uuid=${resume.uuid}&action=add"><img width="35" height="35" src="img/add2.png"></a>
     </div>
     <table border="1" cellpadding="8" cellspacing="0">
