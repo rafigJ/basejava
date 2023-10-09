@@ -34,6 +34,9 @@ public class ResumeServlet extends HttpServlet {
         }
         Resume r;
         switch (action) {
+            case "add":
+                r = new Resume();
+                break;
             case "view":
             case "edit":
                 r = storage.get(uuid);
@@ -56,8 +59,15 @@ public class ResumeServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
-        Resume resume = storage.get(uuid);
-        resume.setFullName(fullName);
+        Resume resume;
+        if (storage.getAllSorted().stream().anyMatch(r -> Objects.equals(r.getUuid(), uuid))) {
+            resume = storage.get(uuid);
+            resume.setFullName(fullName);
+        } else {
+            resume = new Resume(fullName);
+            storage.save(resume);
+        }
+
         for (ContactType ct : ContactType.values()) {
             String value = request.getParameter(ct.name());
             if (!paramsIsEmpty(value)) {
@@ -103,7 +113,6 @@ public class ResumeServlet extends HttpServlet {
                         sectionMap.put(st, cs);
                     }
                     continue;
-
                 case ACHIEVEMENT:
                 case QUALIFICATIONS:
                 case PERSONAL:
@@ -121,13 +130,12 @@ public class ResumeServlet extends HttpServlet {
                         TextSection textSection = new TextSection(value);
                         sectionMap.put(st, textSection);
                     }
+                    break;
+                default:
+                    throw new IllegalArgumentException("SectionType " + st + " is illegal");
             }
         }
-        if (storage.getAllSorted().stream().anyMatch(r -> Objects.equals(r.getUuid(), resume.getUuid()))) {
-            storage.update(resume);
-        } else {
-            storage.save(resume);
-        }
+        storage.update(resume);
         response.sendRedirect("resume");
     }
 

@@ -12,6 +12,9 @@
 <body>
 <jsp:include page="fragments/header.jsp"/>
 <section>
+    <div style="text-align: right;">
+        <a href="resume?uuid=${resume.uuid}&action=add">Add</a>
+    </div>
     <table border="1" cellpadding="8" cellspacing="0">
         <tr>
             <th>Имя</th>
