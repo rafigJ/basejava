@@ -12,8 +12,8 @@
 <body>
 <jsp:include page="fragments/header.jsp"/>
 <section>
-    <div style="text-align: right;">
-        <a href="resume?uuid=${resume.uuid}&action=add">Add</a>
+    <div style="text-align: center;">
+        <a href="resume?uuid=${resume.uuid}&action=add"><img width="35" height="35" src="img/add2.png"></a>
     </div>
     <table border="1" cellpadding="8" cellspacing="0">
         <tr>
@@ -27,8 +27,8 @@
             <tr>
                 <td><a href="resume?uuid=${resume.uuid}&action=view">${resume.fullName}</a></td>
                 <td><%=HtmlMapper.toHtml(ContactType.EMAIL, resume.getContact(ContactType.EMAIL))%></td>
-                <td><a href="resume?uuid=${resume.uuid}&action=delete">Delete</a></td>
-                <td><a href="resume?uuid=${resume.uuid}&action=edit">Edit</a></td>
+                <td><a href="resume?uuid=${resume.uuid}&action=delete"><img width="20" height="20" src="img/delete2.png"></a></td>
+                <td><a href="resume?uuid=${resume.uuid}&action=edit"><img width="20" height="20" src="img/pencil2.png"></a></td>
             </tr>
         </c:forEach>
     </table>

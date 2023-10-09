@@ -13,7 +13,7 @@
 <body>
 <jsp:include page="fragments/header.jsp"/>
 <section>
-    <h2>${resume.fullName}&nbsp;<a href="resume?uuid=${resume.uuid}&action=edit"><img src="img/pencil.png"></a></h2>
+    <h2>${resume.fullName}&nbsp;<a href="resume?uuid=${resume.uuid}&action=edit"><img width="30" height="30" src="img/pencil2.png"></a></h2>
     <p>
         <c:forEach var="contactEntry" items="${resume.contactMap}">
             <jsp:useBean id="contactEntry"
