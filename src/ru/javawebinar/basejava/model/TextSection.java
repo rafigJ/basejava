@@ -8,6 +8,10 @@ public class TextSection extends Section {
     public TextSection() {
     }
 
+    public TextSection(String text) {
+        this.text = text;
+    }
+
     public void setText(String text) {
         this.text = text;
     }

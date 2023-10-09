@@ -23,7 +23,7 @@
         <input type="hidden" name="uuid" value="${resume.uuid}">
           <dl>
               <dt>Имя:</dt>
-              <dd><input type="text" name="fullName" size=50 value="${resume.fullName}"></dd>
+              <dd><input required type="text" name="fullName" size=50 value="${resume.fullName}"></dd>
           </dl>
           <h3>Контакты</h3>
           <p>
@@ -54,7 +54,7 @@
                           </c:if>
                           <c:if test="${type == 'ACHIEVEMENT' || type == 'QUALIFICATIONS'}">
                                <dl>
-                                   <dt>${type.title}</dt>
+                                   <h3>${type.title}</h3></br>
                                    <dd>
                                        <textarea name="${type}" rows="10" cols="100" placeholder="Для маркированного текста используйте enter">${resume.getSection(type)}</textarea>
                                    </dd>
