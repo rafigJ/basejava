@@ -42,31 +42,37 @@ public class HtmlMapper {
                             .append(s)
                             .append("</li>\n");
                 }
-                html.append("</ul>\n</div><br/>");
+                html.append("</ul>\n</div><br/>\n");
                 return html.toString();
             case EXPERIENCE:
             case EDUCATION:
                 CompanySection cs = ((CompanySection) section);
-                html.append(String.format("<div><h3>%s</h3></div><div>", st.getTitle()));
+                html.append(String.format("<div><h2>%s</h2></div>\n<div><ul>\n", st.getTitle()));
 
                 for (Company c : cs.getCompanies()) {
-                    html.append("<h4>");
+                    html.append("<li><h3>\n");
                     if (c.hasWebsite()) {
                         html.append(getHyperLink(c.getCompanyName(), c.getWebsite()));
                     } else {
                         html.append(c.getCompanyName());
                     }
-                    html.append("</h4>\n");
+                    html.append("</h3></li>\n");
 
+                    html.append("<table style=\"border-spacing: 10px\";>\n");
                     for (Company.Period period : c.getPeriods()) {
-                        html.append("<div class='period-section'> \n");
-                        html.append(String.format("<div class='period-dates'>%s &mdash; %s</div>\n",
+                        html.append("<tr>\n");
+
+                        html.append(String.format("<td align='center' style=\"width: 100px;\">%s </br> &mdash; </br> %s</td>\n",
                                 period.getStartDate(), period.getEndDate()));
-                        html.append("<div class='period-details'> \n");
-                        html.append(String.format("<h5>%s</h5>\n", period.getTitle()));
+
+                        html.append("<td>\n");
+                        html.append(String.format("<h3>%s</h3>\n", period.getTitle()));
                         html.append(String.format("<p>%s</p>\n", period.getDescription()));
-                        html.append("</div></div>\n");
+                        html.append("</td>\n");
+
+                        html.append("</tr>\n");
                     }
+                    html.append("</table>\n");
                 }
 
                 html.append("</div><br/>\n");
