@@ -26,9 +26,12 @@
             <jsp:useBean id="resume" type="ru.javawebinar.basejava.model.Resume"/>
             <tr>
                 <td><a href="resume?uuid=${resume.uuid}&action=view">${resume.fullName}</a></td>
-                <td><%=HtmlMapper.toHtml(ContactType.EMAIL, resume.getContact(ContactType.EMAIL))%></td>
-                <td><a href="resume?uuid=${resume.uuid}&action=delete"><img width="20" height="20" src="img/delete2.png"></a></td>
-                <td><a href="resume?uuid=${resume.uuid}&action=edit"><img width="20" height="20" src="img/pencil2.png"></a></td>
+                <td><%=HtmlMapper.toHtml(ContactType.EMAIL, resume.getContact(ContactType.EMAIL))%>
+                </td>
+                <td><a href="resume?uuid=${resume.uuid}&action=delete"><img width="20" height="20"
+                                                                            src="img/delete2.png"></a></td>
+                <td><a href="resume?uuid=${resume.uuid}&action=edit"><img width="20" height="20" src="img/pencil2.png"></a>
+                </td>
             </tr>
         </c:forEach>
     </table>

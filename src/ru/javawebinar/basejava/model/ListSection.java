@@ -1,6 +1,7 @@
 package ru.javawebinar.basejava.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ListSection extends Section {
@@ -9,6 +10,10 @@ public class ListSection extends Section {
     private final List<String> list = new ArrayList<>();
 
     public ListSection() {
+    }
+
+    public ListSection(String ...values) {
+        list.addAll(Arrays.asList(values));
     }
 
     public List<String> getList() {

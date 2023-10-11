@@ -1,4 +1,4 @@
-<%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <%@ page import="ru.javawebinar.basejava.util.HtmlMapper" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -13,7 +13,8 @@
 <body>
 <jsp:include page="fragments/header.jsp"/>
 <section>
-    <h2>${resume.fullName}&nbsp;<a href="resume?uuid=${resume.uuid}&action=edit"><img width="30" height="30" src="img/pencil2.png"></a></h2>
+    <h2>${resume.fullName}&nbsp;<a href="resume?uuid=${resume.uuid}&action=edit"><img width="30" height="30"
+                                                                                      src="img/pencil2.png"></a></h2>
     <p>
         <c:forEach var="contactEntry" items="${resume.contactMap}">
             <jsp:useBean id="contactEntry"
