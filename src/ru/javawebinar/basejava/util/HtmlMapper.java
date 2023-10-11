@@ -2,6 +2,7 @@ package ru.javawebinar.basejava.util;
 
 import ru.javawebinar.basejava.model.*;
 
+import java.time.LocalDate;
 import java.util.Map;
 
 
@@ -62,8 +63,13 @@ public class HtmlMapper {
                     for (Company.Period period : c.getPeriods()) {
                         html.append("<tr>\n");
 
+                        LocalDate startDate = period.getStartDate();
+                        String dateS = startDate.getMonthValue() + "/" + startDate.getYear();
+
+                        LocalDate endDate = period.getEndDate();
+                        String dateE = endDate.getMonthValue() + "/" + endDate.getYear();
                         html.append(String.format("<td align='center' style=\"width: 100px;\">%s </br> &mdash; </br> %s</td>\n",
-                                period.getStartDate(), period.getEndDate()));
+                                dateS, endDate.isBefore(LocalDate.now()) ? dateE : "Сейчас"));
 
                         html.append("<td>\n");
                         html.append(String.format("<h3>%s</h3>\n", period.getTitle()));

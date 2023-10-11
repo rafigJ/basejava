@@ -12,7 +12,6 @@ import java.util.Properties;
 public class Config {
     private static final File PROPS = new File(getHomeDir(), "config\\resumes.properties");
     private static final Config INSTANCE = new Config();
-
     private final Properties props = new Properties();
     private final File storageDir;
     private final Storage storage;
@@ -52,7 +51,7 @@ public class Config {
     }
 
     private static File getHomeDir() {
-        // Нужно установить в переменные окружения при запуске -DhomeDir="D:/Java/BaseJavaCourse/basejava"
+        // Нужно установить в переменные окружения при запуске -DhomeDir="C:\Users\Nargiz\IdeaProjects\basejava"
         String prop = System.getProperty("homeDir");
         File homeDir = new File(prop == null ? "." : prop);
         if (!homeDir.isDirectory()) {

@@ -73,8 +73,8 @@
                                   <c:set var="k" value="0"/>
                                   <div style="margin-bottom: 30px;"></div>
                                   <c:forEach var="period" items="${company.getPeriods()}">
-                                      <input type='text' name='${type}_startDate${i}${k}' size='10' value='${period.getStartDate()}' placeholder='Дата начала'>
-                                      <input type='text' name='${type}_endDate${i}${k}' size='10' value='${period.getEndDate()}' placeholder='Дата конца'></br>
+                                      <input type='month' name='${type}_startDate${i}${k}' size='10' value="${period.getStartDate().toString().substring(0, 7)}" placeholder='Дата начала'>
+                                      <input type='month' name='${type}_endDate${i}${k}' size='10' value="${period.getEndDate().toString().substring(0, 7)}" placeholder='Дата конца'></br>
                                       <input type='text' name='${type}_periodTitle${i}${k}' size='100' value='${period.getTitle()}' placeholder='Заголовок'></br>
                                       <textarea name='${type}_periodDescription${i}${k}' rows='5' cols='100' placeholder='Описание'>${period.getDescription()}</textarea></br>
                                       <c:set var="k" value="${k + 1}"/>

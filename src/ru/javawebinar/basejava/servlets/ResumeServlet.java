@@ -104,8 +104,8 @@ public class ResumeServlet extends HttpServlet {
                             return;
                         }
                         company.getPeriods().add(new Company.Period(
-                                LocalDate.parse(startDate),
-                                LocalDate.parse(endDate),
+                                LocalDate.parse(startDate + "-02"),
+                                LocalDate.parse(endDate + "-02"),
                                 periodTitle,
                                 periodDescription)
                         );
@@ -178,8 +178,8 @@ public class ResumeServlet extends HttpServlet {
             List<Company.Period> periods = company.getPeriods();
             List<Integer> toDelete = new ArrayList<>();
             for (int k = 0; k < periods.size(); k++) {
-                String startDate = request.getParameter(st + "_startDate" + i + k).trim();
-                String endDate = request.getParameter(st + "_endDate" + i + k).trim();
+                String startDate = request.getParameter(st + "_startDate" + i + k);
+                String endDate = request.getParameter(st + "_endDate" + i + k);
                 String periodTitle = request.getParameter(st + "_periodTitle" + i + k).trim();
                 String periodDescription = request.getParameter(st + "_periodDescription" + i + k).trim();
                 if (paramsIsEmpty(startDate, endDate, periodTitle)) {
@@ -191,8 +191,8 @@ public class ResumeServlet extends HttpServlet {
                     continue;
                 }
                 periods.set(k, new Company.Period(
-                        LocalDate.parse(startDate),
-                        LocalDate.parse(endDate),
+                        LocalDate.parse(startDate + "-02"),
+                        LocalDate.parse(endDate + "-02"),
                         periodTitle,
                         periodDescription)
                 );
