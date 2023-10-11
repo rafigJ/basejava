@@ -82,10 +82,18 @@
                     <c:set var="k" value="${k + 1}"/>
                     <div style="margin-bottom: 20px;"></div>
                 </c:forEach>
-
+                <c:import url="fragments/empty_company_period.jsp">
+                    <c:param name="type" value="${type}"/>
+                    <c:param name="i" value="${i}"/>
+                    <c:param name="k" value="${k}"/>
+                </c:import>
                 <c:set var="i" value="${i + 1}"/>
                 <div style="margin-bottom: 50px;"></div>
             </c:forEach>
+            <c:import url="fragments/empty_company.jsp">
+                <c:param name="type" value="${type}"/>
+                <c:param name="i" value="${i}"/>
+            </c:import>
         </c:if>
         </c:otherwise>
         </c:choose>

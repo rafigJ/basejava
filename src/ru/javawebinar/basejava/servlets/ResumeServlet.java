@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import static ru.javawebinar.basejava.util.DataUtil.periodOf;
 
@@ -147,35 +149,66 @@ public class ResumeServlet extends HttpServlet {
     private static void updateCompanySection(HttpServletRequest request, CompanySection cs, SectionType st) throws IOException {
         List<Company> companies = cs.getCompanies();
         int listSize = companies.size();
+        List<Integer> removeCompany = new ArrayList<>(listSize);
         for (int i = 0; i < listSize; i++) {
             String companyName = request.getParameter(st + "_companyName" + i).trim();
             String webSite = request.getParameter(st + "_webSite" + i).trim();
+
             if (paramsIsEmpty(companyName)) {
-                throw new RuntimeException("company name should always be");
+                removeCompany.add(i);
             }
+
             Company company = companies.get(i);
             company.setCompanyName(companyName);
             company.setWebsite(webSite);
             List<Company.Period> periods = company.getPeriods();
 
-            List<Integer> toDelete = new ArrayList<>();
-            for (int k = 0; k < periods.size(); k++) {
+            int size = periods.size();
+            List<Integer> removePeriod = new ArrayList<>(size);
+
+            for (int k = 0; k < size + 1; k++) {
                 String start = request.getParameter(st + "_startDate" + i + k);
                 String end = request.getParameter(st + "_endDate" + i + k);
                 String title = request.getParameter(st + "_periodTitle" + i + k).trim();
                 String description = request.getParameter(st + "_periodDescription" + i + k).trim();
-                if (paramsIsEmpty(start, end, title)) {
-                    if (periods.size() == 1) {
-                        throw new IllegalArgumentException("one period should always be present");
+
+                if (k < size) {
+                    if (paramsIsEmpty(start, end, title)) {
+                        if (size == 1) {
+                            throw new IllegalArgumentException("one period should always be present in " + st.getTitle());
+                        }
+                        removePeriod.add(k);
+                        continue;
                     }
-                    toDelete.add(k);
-                    continue;
+                    periods.set(k, periodOf(start, end, title, description));
+                } else if (!paramsIsEmpty(start, end, title)) {
+                    periods.add(periodOf(start, end, title, description));
                 }
-                periods.set(k, periodOf(start, end, title, description));
             }
-            for (int d : toDelete) {
+            for (int d : removePeriod) {
                 periods.remove(d);
             }
         }
+
+        String companyName = request.getParameter(st + "_companyName" + listSize).trim();
+        String webSite = request.getParameter(st + "_webSite" + listSize).trim();
+        String start = request.getParameter(st + "_startDate" + listSize + 0);
+        String end = request.getParameter(st + "_endDate" + listSize + 0);
+        String title = request.getParameter(st + "_periodTitle" + listSize + 0).trim();
+        String description = request.getParameter(st + "_periodDescription" + listSize + 0).trim();
+        if (!paramsIsEmpty(companyName, start, end, title)) {
+            companies.add(createNewCompany(companyName, webSite, periodOf(start, end, title, description)));
+        }
+        for (int r : removeCompany) {
+            companies.remove(r);
+        }
+    }
+
+    private static Company createNewCompany(String companyName, String webSite, Company.Period period) {
+        Company company = new Company();
+        company.setCompanyName(companyName);
+        company.setWebsite(webSite);
+        company.getPeriods().add(period);
+        return company;
     }
 }
