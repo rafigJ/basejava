@@ -63,30 +63,31 @@
 
             <c:forEach var="company" items="${companySection.companies}">
 
-                <input type='text' style="font-size: 20px;" name='${type}_companyName${i}' size='30'
+                <input type='text' style="font-size: 20px;" name='${type}' size='30'
                        value='${company.companyName}' placeholder='Название Организации'> <br>
-                <input type='text' style="font-size: 20px;" name='${type}_webSite${i}' size='50'
+                <input type='text' style="font-size: 20px;" name='${type}_webSite' size='50'
                        value='${company.getWebsite()}' placeholder='Сайт Организации'> <br>
 
-                <c:set var="k" value="0"/>
+
                 <div style="margin-bottom: 30px;"></div>
                 <c:forEach var="period" items="${company.getPeriods()}">
-                    <input type='month' name='${type}_startDate${i}${k}' size='10'
+                    <input type='month' name='${type}_startDate${i}' size='10'
                            value="${DataUtil.toMonthYear(period.getStartDate())}" placeholder='Дата начала'>
-                    <input type='month' name='${type}_endDate${i}${k}' size='10'
+                    <input type='month' name='${type}_endDate${i}' size='10'
                            value="${DataUtil.toMonthYear(period.getEndDate())}" placeholder='Дата конца'><br>
-                    <input type='text' name='${type}_periodTitle${i}${k}' size='100' value='${period.getTitle()}'
+                    <input type='text' name='${type}_periodTitle${i}' size='100' value='${period.getTitle()}'
                            placeholder='Заголовок'></br>
-                    <textarea name='${type}_periodDescription${i}${k}' rows='5' cols='100'
+                    <textarea name='${type}_periodDescription${i}' rows='5' cols='100'
                               placeholder='Описание'>${period.getDescription()}</textarea></br>
-                    <c:set var="k" value="${k + 1}"/>
                     <div style="margin-bottom: 20px;"></div>
                 </c:forEach>
+
+
                 <c:import url="fragments/empty_company_period.jsp">
                     <c:param name="type" value="${type}"/>
                     <c:param name="i" value="${i}"/>
-                    <c:param name="k" value="${k}"/>
                 </c:import>
+
                 <c:set var="i" value="${i + 1}"/>
                 <div style="margin-bottom: 50px;"></div>
             </c:forEach>

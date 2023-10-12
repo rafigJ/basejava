@@ -73,7 +73,6 @@ public class ResumeServlet extends HttpServlet {
                 resume.getContactMap().remove(ct);
             }
         }
-
         for (SectionType st : SectionType.values()) {
             Map<SectionType, Section> sectionMap = resume.getSectionMap();
             switch (st) {
