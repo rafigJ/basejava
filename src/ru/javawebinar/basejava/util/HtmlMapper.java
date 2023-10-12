@@ -59,7 +59,7 @@ public class HtmlMapper {
                     }
                     html.append("</h3></li>\n");
 
-                    html.append("<table style=\"border-spacing: 10px\";>\n");
+                    html.append("<table width=\"auto\">\n");
                     for (Company.Period period : c.getPeriods()) {
                         html.append("<tr>\n");
 
@@ -68,12 +68,12 @@ public class HtmlMapper {
 
                         LocalDate endDate = period.getEndDate();
                         String dateE = endDate.getMonthValue() + "/" + endDate.getYear();
-                        html.append(String.format("<td align='center' style=\"width: 100px;\">%s </br> &mdash; </br> %s</td>\n",
+                        html.append(String.format("<td align='center' style=\"white-space: nowrap;\" >%s &mdash; %s</td>\n",
                                 dateS, endDate.isBefore(LocalDate.now()) ? dateE : "Сейчас"));
 
                         html.append("<td>\n");
-                        html.append(String.format("<h3>%s</h3>\n", period.getTitle()));
-                        html.append(String.format("<p>%s</p>\n", period.getDescription()));
+                        html.append(String.format("<h3 style=\"margin-left: 40px;\">%s</h3>\n", period.getTitle()));
+                        html.append(String.format("<p style=\"margin-left: 40px;\">%s</p>\n", period.getDescription()));
                         html.append("</td>\n");
 
                         html.append("</tr>\n");

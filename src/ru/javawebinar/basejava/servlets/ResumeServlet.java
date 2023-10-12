@@ -3,6 +3,7 @@ package ru.javawebinar.basejava.servlets;
 import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.storage.Storage;
+import ru.javawebinar.basejava.util.DataUtil;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -13,8 +14,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import static ru.javawebinar.basejava.util.DataUtil.periodOf;
 
 public class ResumeServlet extends HttpServlet {
     private Storage storage;
@@ -75,56 +74,50 @@ public class ResumeServlet extends HttpServlet {
         }
         for (SectionType st : SectionType.values()) {
             Map<SectionType, Section> sectionMap = resume.getSectionMap();
-            switch (st) {
-                case PERSONAL:
-                case OBJECTIVE:
-                case ACHIEVEMENT:
-                case QUALIFICATIONS:
-                    String value = request.getParameter(st.name()).trim();
-                    if (paramsIsEmpty(value)) {
-                        sectionMap.remove(st);
-                    } else if (st == SectionType.PERSONAL || st == SectionType.OBJECTIVE) {
+            String value = request.getParameter(st.name());
+            if (paramsIsEmpty(value)) {
+                sectionMap.remove(st);
+            } else {
+                switch (st) {
+                    case PERSONAL:
+                    case OBJECTIVE:
                         sectionMap.put(st, new TextSection(value));
-                    } else {
-                        ListSection listSection = new ListSection(value.split("\n"));
-                        List<String> list = listSection.getList();
-                        list.removeIf(e -> e.equals("\r") || e.isEmpty());
-                        sectionMap.put(st, listSection);
-                    }
-                    continue;
-                case EXPERIENCE:
-                case EDUCATION:
-                    if (sectionMap.containsKey(st)) {
-                        updateCompanySection(request, (CompanySection) sectionMap.get(st), st);
-                    } else {
-                        CompanySection cs = new CompanySection();
-                        List<Company> companies = cs.getCompanies();
-                        Company company = new Company();
-                        String companyName = request.getParameter(st + "_companyName0").trim();
-                        if (paramsIsEmpty(companyName)) {
-                            continue;
+                        break;
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        final String regex = "\\n{2,}";
+                        String s = value.trim().replaceAll("\\r", "").replaceAll(regex, "\n");
+                        System.out.println(s);
+                        sectionMap.put(st, new ListSection(s.split("\n")));
+                        break;
+                    case EXPERIENCE:
+                    case EDUCATION:
+                        String[] values = request.getParameterValues(st.name());
+                        String[] webSites = request.getParameterValues(st.name() + "_webSite");
+                        List<Company> companies = new ArrayList<>();
+                        for (int i = 0; i < values.length; i++) {
+                            if (!paramsIsEmpty(values[i])) {
+                                Company company = new Company(values[i], webSites[i]);
+                                List<Company.Period> periods = company.getPeriods();
+                                String[] titles = request.getParameterValues(st.name() + "_periodTitle" + i);
+                                String[] starts = request.getParameterValues(st.name() + "_startDate" + i);
+                                String[] ends = request.getParameterValues(st.name() + "_endDate" + i);
+                                String[] descriptions = request.getParameterValues(st.name() + "_periodDescription" + i);
+                                for (int j = 0; j < titles.length; j++) {
+                                    if (!paramsIsEmpty(titles[j], starts[j], ends[j])) {
+                                        periods.add(DataUtil.periodOf(starts[j], ends[j], titles[j], descriptions[j]));
+                                    }
+                                }
+                                companies.add(company);
+                            }
                         }
-                        String webSite = request.getParameter(st + "_webSite0").trim();
-                        company.setCompanyName(companyName);
-                        company.setWebsite(webSite);
-
-                        String start = request.getParameter(st + "_startDate00").trim();
-                        String end = request.getParameter(st + "_endDate00").trim();
-                        String periodTitle = request.getParameter(st + "_periodTitle00").trim();
-                        String periodDescription = request.getParameter(st + "_periodDescription00").trim();
-                        if (paramsIsEmpty(start, end, periodTitle, periodDescription)) {
-                            throw new IllegalArgumentException("one period should always be present");
+                        if (!companies.isEmpty()) {
+                            CompanySection section = new CompanySection();
+                            section.getCompanies().addAll(companies);
+                            resume.getSectionMap().put(st, section);
                         }
-
-                        company.getPeriods().add(
-                                periodOf(start, end, periodTitle, periodDescription)
-                        );
-                        companies.add(company);
-                        sectionMap.put(st, cs);
-                    }
-                    continue;
-                default:
-                    throw new IllegalArgumentException("SectionType " + st + " is illegal");
+                        break;
+                }
             }
         }
 
@@ -143,71 +136,5 @@ public class ResumeServlet extends HttpServlet {
             }
         }
         return true;
-    }
-
-    private static void updateCompanySection(HttpServletRequest request, CompanySection cs, SectionType st) throws IOException {
-        List<Company> companies = cs.getCompanies();
-        int listSize = companies.size();
-        List<Integer> removeCompany = new ArrayList<>(listSize);
-        for (int i = 0; i < listSize; i++) {
-            String companyName = request.getParameter(st + "_companyName" + i).trim();
-            String webSite = request.getParameter(st + "_webSite" + i).trim();
-
-            if (paramsIsEmpty(companyName)) {
-                removeCompany.add(i);
-            }
-
-            Company company = companies.get(i);
-            company.setCompanyName(companyName);
-            company.setWebsite(webSite);
-            List<Company.Period> periods = company.getPeriods();
-
-            int size = periods.size();
-            List<Integer> removePeriod = new ArrayList<>(size);
-
-            for (int k = 0; k < size + 1; k++) {
-                String start = request.getParameter(st + "_startDate" + i + k);
-                String end = request.getParameter(st + "_endDate" + i + k);
-                String title = request.getParameter(st + "_periodTitle" + i + k).trim();
-                String description = request.getParameter(st + "_periodDescription" + i + k).trim();
-
-                if (k < size) {
-                    if (paramsIsEmpty(start, end, title)) {
-                        if (size == 1) {
-                            throw new IllegalArgumentException("one period should always be present in " + st.getTitle());
-                        }
-                        removePeriod.add(k);
-                        continue;
-                    }
-                    periods.set(k, periodOf(start, end, title, description));
-                } else if (!paramsIsEmpty(start, end, title)) {
-                    periods.add(periodOf(start, end, title, description));
-                }
-            }
-            for (int d : removePeriod) {
-                periods.remove(d);
-            }
-        }
-
-        String companyName = request.getParameter(st + "_companyName" + listSize).trim();
-        String webSite = request.getParameter(st + "_webSite" + listSize).trim();
-        String start = request.getParameter(st + "_startDate" + listSize + 0);
-        String end = request.getParameter(st + "_endDate" + listSize + 0);
-        String title = request.getParameter(st + "_periodTitle" + listSize + 0).trim();
-        String description = request.getParameter(st + "_periodDescription" + listSize + 0).trim();
-        if (!paramsIsEmpty(companyName, start, end, title)) {
-            companies.add(createNewCompany(companyName, webSite, periodOf(start, end, title, description)));
-        }
-        for (int r : removeCompany) {
-            companies.remove(r);
-        }
-    }
-
-    private static Company createNewCompany(String companyName, String webSite, Company.Period period) {
-        Company company = new Company();
-        company.setCompanyName(companyName);
-        company.setWebsite(webSite);
-        company.getPeriods().add(period);
-        return company;
     }
 }
