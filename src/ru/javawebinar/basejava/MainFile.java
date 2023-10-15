@@ -37,7 +37,6 @@ public class MainFile {
         getDirectoryFile(file, 0);
     }
 
-    //todo сделать с отступами
     private static void getDirectoryFile(File file, int i){
         File[] files = file.listFiles();
         StringBuilder space = new StringBuilder();

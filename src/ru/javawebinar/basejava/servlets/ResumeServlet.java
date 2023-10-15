@@ -87,7 +87,6 @@ public class ResumeServlet extends HttpServlet {
                     case QUALIFICATIONS:
                         final String regex = "\\n{2,}";
                         String s = value.trim().replaceAll("\\r", "").replaceAll(regex, "\n");
-                        System.out.println(s);
                         sectionMap.put(st, new ListSection(s.split("\n")));
                         break;
                     case EXPERIENCE:

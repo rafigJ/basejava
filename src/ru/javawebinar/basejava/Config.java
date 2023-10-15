@@ -51,7 +51,7 @@ public class Config {
     }
 
     private static File getHomeDir() {
-        // Нужно установить в переменные окружения при запуске -DhomeDir="C:\Users\Nargiz\IdeaProjects\basejava"
+        // Нужно установить в переменные окружения при запуске -DhomeDir="C:\Users\....\basejava"
         String prop = System.getProperty("homeDir");
         File homeDir = new File(prop == null ? "." : prop);
         if (!homeDir.isDirectory()) {
