@@ -62,7 +62,13 @@ public class ResumeServlet extends HttpServlet {
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
 
-        final Resume resume = paramsIsEmpty(uuid) ? new Resume(fullName) : storage.get(uuid);
+        final Resume resume;
+        if (paramsIsEmpty(uuid)) {
+            resume = new Resume(fullName);
+        } else {
+            resume = storage.get(uuid);
+            resume.setFullName(fullName);
+        }
 
         for (ContactType ct : ContactType.values()) {
             String value = request.getParameter(ct.name());
