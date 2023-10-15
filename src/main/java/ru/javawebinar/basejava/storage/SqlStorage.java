@@ -114,7 +114,7 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        Map<String, Resume> map = sqlHelper.doSql("SELECT * FROM resume r ORDER BY full_name, uuid", ps -> {
+        Map<String, Resume> map = sqlHelper.doSql("SELECT * FROM resume r ORDER BY uuid, full_name", ps -> {
                     ResultSet res = ps.executeQuery();
                     Map<String, Resume> resumeMap = new LinkedHashMap<>();
                     while (res.next()) {

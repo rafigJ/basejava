@@ -22,18 +22,13 @@ public abstract class AbstractStorageTest {
     private static final String UUID_NOT_EXIST = "uuid_not_exist";
     protected static final String UUID_1 = "uuid10000000000000000000000000000000";
     private static final String UUID_2 = "uuid20000000000000000000000000000000";
-    private static final String UUID_3 = "uuid30000000000000000000000000000000";
     private static final String UUID_4 = "uuid40000000000000000000000000000000";
     public static final String FULL_NAME_1 = "August";
     public static final String FULL_NAME_2 = "Bar";
-    public static final String FULL_NAME_3 = "Car";
     protected static final Resume RESUME_1 = ResumeTestData.getFullRandomResume(UUID_1, FULL_NAME_1);
     protected static final Resume RESUME_2 = ResumeTestData.getFullRandomResume(UUID_2, FULL_NAME_2);
-    protected static final Resume RESUME_3 = ResumeTestData.getNotFullRandomResume(UUID_3, FULL_NAME_3);
-    //    protected static final Resume RESUME_1 = new Resume(UUID_1, FULL_NAME_1);
-//    protected static final Resume RESUME_2 = new Resume(UUID_2, FULL_NAME_2);
-//    protected static final Resume RESUME_3 = new Resume(UUID_3, FULL_NAME_3);
-    protected static final Resume RESUME_4 = ResumeTestData.getResume();
+    protected static final Resume RESUME_3 = ResumeTestData.getResume();
+    protected static final Resume RESUME_4 = ResumeTestData.getNotFullRandomResume(UUID_4, "uuid4");
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -83,7 +78,7 @@ public abstract class AbstractStorageTest {
     @Test
     public void getAllSorted() {
         List<Resume> actual = storage.getAllSorted();
-        List<Resume> expected = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
+        List<Resume> expected = Arrays.asList(RESUME_3, RESUME_1, RESUME_2);
         assertEquals(expected, actual);
     }
 

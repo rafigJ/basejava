@@ -159,6 +159,13 @@ public class ResumeTestData {
                 "Участие в проекте Deutsche Bank CRM (WebLogic, Hibernate, Spring, Spring MVC, SmartGWT, GWT, Jasper, Oracle). " +
                         "Реализация клиентской и серверной части CRM. Реализация RIA-приложения для администрирования, мониторинга и анализа результатов в области " +
                         "алгоритмического трейдинга. JPA, Spring, Spring-MVC, GWT, ExtGWT (GXT), Highstock, Commet, HTML5."));
+
+        company.getPeriods().add(new Company.Period(parse("10/2003"), parse("04/2022"), "Ведущий программист 2",
+                "Тест периодов большого количества периодов. JPA, Spring, Spring-MVC, GWT, ExtGWT (GXT), Highstock, Commet, HTML5."));
+
+        company.getPeriods().add(new Company.Period(parse("10/2009"), parse("04/2022"), "Ведущий программист 3",
+                "Другой период Luxoft"));
+
         r.addInfoAtSection(SectionType.EXPERIENCE, company);
 
         company = new Company("Coursera");
