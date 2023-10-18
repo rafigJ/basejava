@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.Properties;
 
 public class Config {
@@ -21,7 +22,7 @@ public class Config {
     }
 
     private Config() {
-        try (InputStream is = new FileInputStream(PROPS)) {
+        try (InputStream is = getClass().getResourceAsStream("/config/resumes.properties")) {
             props.load(is);
             storageDir = new File(props.getProperty("storage.dir"));
             storage = new SqlStorage(getDbUrl(), getDbUser(), getDbPassword());
